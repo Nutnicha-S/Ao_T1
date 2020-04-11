@@ -1148,11 +1148,20 @@ def eightTerm(request):
     newGPAX = '%.2f' % resGPAX
     return render(request, 'eightTerm.html', {'dataterm8':dataterm_8,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดงรูป flow
 def picFlow(request):
+
+    # render หน้า picFlow.html เพื่อแสดงรูป Flow
     return render(request, 'picFlow.html')
 
+# แสดงหน้า about
 def about(request):
+
+    # render หน้า about.html
     return render(request, 'about.html')
 
+# แสดงหน้า help
 def help(request):
+
+    # render หน้า help.html
     return render(request, 'help.html')
