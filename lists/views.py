@@ -536,7 +536,7 @@ def flow(request):
     # เก็บ text input ที่จะ search เป็น string
     subjects = str(request.POST.get('searchFlow',''))
 
-    # กดปุ่ม search
+    # ถ้ามีการกดปุ่ม search
     if 'searchSubject' in request.POST :
 
         # ถ้า text input เป็นวิชานี้ ให้ Result เป็นวิชานี้
@@ -763,10 +763,13 @@ def flow(request):
         else :
             Result = "The subject isn't in the flow"
 
-    # ให้ render หน้า flow.html ออกมา โดยกำหนดให้ render วิชาและ Result ที่เป็นตัวต่อของวิชานั้น ๆ ออกมาด้วย ตามที่ได้กำหนดไว้ใน flow.html
+    # ให้ render หน้า flow.html ออกมา โดย render วิชาและ Result ที่เป็นตัวต่อของวิชานั้น ๆ ออกมาด้วย ตามที่ได้กำหนดไว้ใน flow.html
     return render(request, 'flow.html',{'subjects':subjects, 'Result':Result})
 
+# รวมทุกวิชาใน flow โดยเรียงตามเทอมในรูป flow
 def listOfSubject(request) :
+
+    # term 1
     listSemister1 = """ Programming Fundamental<br />
             Engineering Mathematics I<br />
             Computer Engineering Exploration<br />
@@ -777,6 +780,7 @@ def listOfSubject(request) :
             Social Sciences Elective Course<br />
             Introduction to Engineer<br />"""
 
+    # term 2
     listSemister2 = """Electric Circuit Theory<br />
             Electric Circuit Lab<br />
             Algorithms and Data Structure<br />
@@ -787,6 +791,7 @@ def listOfSubject(request) :
             Language Elective Course II<br />
             Physical Education Elective Course II<br />"""
 
+    # term 3
     listSemister3 = """Statistics for Computer Engineer<br />
             Introduction to Signals and System<br />
             Logic Design of Digital System<br />
@@ -795,6 +800,7 @@ def listOfSubject(request) :
             Discrete Mathematics<br />
             Science and Maths Elective I<br />"""
 
+    # term 4
     listSemister4 = """Software Development Practice II<br />
             Computer Networks I<br />
             Computer Organization<br />
@@ -802,6 +808,7 @@ def listOfSubject(request) :
             Analog and Digital Electronics<br />
             Science and Maths Elective II<br />"""
 
+    # term 5
     listSemister5 = """Software Engineering<br />
             Computer Networks II<br />
             Operating Systems<br />
@@ -809,6 +816,7 @@ def listOfSubject(request) :
             Analog and Digital Electronics Lab<br />
             Language Elective Course III<br />"""
 
+    # term 6
     listSemister6 = """Database Systems<br />
             Computer Networks Lab<br />
             Embedded System Design Laboratory<br />
@@ -817,17 +825,20 @@ def listOfSubject(request) :
             Computer Eng. Elective Course II<br />
             Humanities Elective Course I<br />"""
 
+    # term 7
     listSemister7 = """Project I<br />
             Free Elective Course I<br />
             Humanities Elective Course II<br />
             Computer Eng. Elective Course III<br />
             Computer Eng. Elective Course IV<br />"""
 
+    # term 8
     listSemister8 = """Project II<br />
             Computer Eng. Seminar<br />
             Free Elective Course II<br />
             Science and Maths Elective III"""
 
+    # render หน้า subject.html ออกมา เรียงตามเทอมนั้น ๆ 
     return render(request, 'subject.html', {'semister1':listSemister1,'semister2':listSemister2,'semister3':listSemister3,'semister4':listSemister4,'semister5':listSemister5,'semister6':listSemister6,'semister7':listSemister7,'semister8':listSemister8})
 
 def Graph(request):
