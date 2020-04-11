@@ -3,25 +3,34 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Term1,Term2,Term3,Term4,Term5,Term6,Term7,Term8,GPA
-
-#this is GradeGuide Page
 from lists.models import Userinfo
 
+# แสดงหน้าหลักของ GradeGuide
 def home_page(request):
 
+    # render หน้า home.html
     return render(request, 'home.html')
 
-#this is the Real HomePage
+# count user ที่มา register
 def register(request):
+
+    # เก็บ GPA ลง dataGPA
     dataGPA = GPA.objects.all()
+
+    # ถ้าความยาวของ dataGPA เป็น 0
     if len(dataGPA) == 0:
+        # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0, GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
+
+    # นับ User ที่มา register
     count = User.objects.count()
+
+    # render หน้า index.html และบอกจำนวนที่ user มา register
     return render(request, 'index.html', {
         'count': count
     })
 
-#this is signup Page
+# หน้า sign up
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -41,7 +50,6 @@ def signup(request):
         'form': form
     })
 
-#this is login page
 def calGrade(request):
     term1 = Term1()
     term2 = Term2()
