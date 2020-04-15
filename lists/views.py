@@ -1224,6 +1224,7 @@ def firstTerm(request):
     # render firstTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'firstTerm.html', {'dataterm1':dataterm_1,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 2 และ GPAX 
 def secondTerm(request):
     # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
@@ -1299,6 +1300,7 @@ def secondTerm(request):
     # render secondTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'secondTerm.html', {'dataterm2':dataterm_2,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 3 และ GPAX 
 def thirdTerm(request):
     # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
@@ -1374,6 +1376,7 @@ def thirdTerm(request):
     # render thirdTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'thirdTerm.html', {'dataterm3':dataterm_3,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 4 และ GPAX 
 def fourthTerm(request):
     # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
@@ -1449,6 +1452,7 @@ def fourthTerm(request):
     # render fourthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'fourthTerm.html', {'dataterm4':dataterm_4,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 5 และ GPAX 
 def fifthTerm(request):
     # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
@@ -1524,6 +1528,7 @@ def fifthTerm(request):
     # render fifthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'fifthTerm.html', {'dataterm5':dataterm_5,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 6 และ GPAX 
 def sixthTerm(request):
     # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
@@ -1599,6 +1604,7 @@ def sixthTerm(request):
     # render sixthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'sixthTerm.html', {'dataterm6':dataterm_6,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 7 และ GPAX 
 def seventhTerm(request):
     # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
@@ -1674,36 +1680,80 @@ def seventhTerm(request):
     # render seventhTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'seventhTerm.html', {'dataterm7':dataterm_7,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 8 และ GPAX 
 def eightTerm(request):
+    # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
     dataterm_8 = Term8.objects.all()
+    # ให้ค่า countunit เป็น 0
     countunit = 0
+
+    # ถ้าความยาวของ dataGPA เป็น 0
     if len(dataGPA) == 0:
+        # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0, GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
+
+        # loop สำหรับ i ใน dataGPA
     for i in dataGPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
         GPAX = float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4) + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8)
+    
+    # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
+        # loop สำหรับ unit ใน dataGPA
         for unit in dataGPA:
+
+            # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+            
+            # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+
+            # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+            
+            # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+            
+            # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+            
+            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
                 countunit+=1
+            
+            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+            
+            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
+                # ให้ countunit บวกเท่ากับ 1
                 countunit+=1
+    
+    # other
     else:
+        # ให้ countunit บวกเท่ากับ 1
         countunit+=1
+
+    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
     resGPAX = float(GPAX) / float(countunit)
+    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
+    
+    # render eighthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'eightTerm.html', {'dataterm8':dataterm_8,'GPARES':dataGPA,'res_GPAX': newGPAX})
 
 # แสดงรูป flow
