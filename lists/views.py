@@ -7,13 +7,11 @@ from lists.models import Userinfo
 
 # แสดงหน้าหลักของ GradeGuide
 def home_page(request):
-
     # render หน้า home.html
     return render(request, 'home.html')
 
 # count user ที่มา register
 def register(request):
-
     # เก็บ GPA ลง dataGPA
     dataGPA = GPA.objects.all()
 
@@ -32,20 +30,33 @@ def register(request):
 
 # หน้า sign up
 def signup(request):
+    # ถ้า request เป็น post
     if request.method == 'POST':
+        # เก็บ form สร้าง User ไว้ที่ form
         form = UserCreationForm(request.POST)
+        # ถ้า form นี้ถูกต้อง
         if form.is_valid():
+            # ให้ save form นี้ไว้ใน user
             user = form.save()
+            # ให้ refresh user จาก database
             user.refresh_from_db()
+            # get username
             username = form.cleaned_data.get('username')
+            # get password
             raw_password = form.cleaned_data.get('password1')
+            # สร้าง username จาก username ที่ได้พิมพ์ไป
             Userinfo.objects.create(name=username)
+            # save user
             user.save()
+            # user เก็บทั้ง username และ password
             user = authenticate(username=username, password=raw_password)
+            # log in โดยใช้ user ที่สร้างมา
             login(request, user)
+            # return กลับไปที่หน้า home
             return redirect('home')
     else:
         form = UserCreationForm()
+    # render หน้า signup.html พร้อมใช้ form ที่จะสร้าง user
     return render(request, 'registration/signup.html', {
         'form': form
     })
@@ -776,7 +787,6 @@ def flow(request):
 
 # รวมทุกวิชาใน flow โดยเรียงตามเทอมในรูป flow
 def listOfSubject(request) :
-
     # term 1
     listSemister1 = """ Programming Fundamental<br />
             Engineering Mathematics I<br />
