@@ -1061,7 +1061,7 @@ def Graph(request):
     # เก็บ GPA ทั้วหมดไว้ใน dataGPA
     dataGPA = GPA.objects.all()
 
-    # ถ้าความยาวของ # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0 เป็น 0
+    # ถ้าความยาวของ dataGPA เป็น 0
     if len(dataGPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0, GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
@@ -1130,15 +1130,25 @@ def Graph(request):
                                           'dataterm4': dataterm_4, 'dataterm5': dataterm_5, 'dataterm6': dataterm_6,
                                           'dataterm7': dataterm_7, 'dataterm8': dataterm_8, 'GPARES': dataGPA,
                                           'res_GPAX': newGPAX})
-                                          
+
+# เลือกเทอมเพื่อแสดงผลลัพธ์
 def Result(request):
+    # เก็บ GPA ไว้ใน dataGPA
     dataGPA = GPA.objects.all()
+
+    # ถ้าความยาวของ dataGPA เป็น 0
     if len(dataGPA) == 0:
+        # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0, GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm ของแต่ละเทอม
     dataterm_1 = Term1.objects.all()
     dataterm_2 = Term2.objects.all()
-    dataGPA = GPA.objects.all()
+
+    # render Result.html พร้อมแสดง GPA ของแต่ละเทอม พร้อม GPAX
     return render(request, 'Result.html',{'dataterm1':dataterm_1,'dataterm2':dataterm_2,'GPARES':dataGPA})
+
+
 def firstTerm(request):
     dataGPA = GPA.objects.all()
     dataterm_1 = Term1.objects.all()
