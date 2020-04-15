@@ -61,6 +61,7 @@ def signup(request):
         'form': form
     })
 
+# calculate the grade
 def calGrade(request):
     term1 = Term1()
     term2 = Term2()
@@ -543,21 +544,21 @@ def calGrade(request):
             message = 'Please select term before saving grade'
             return render(request, 'home.html',{'message':message})
 
+# เลือกเทอม
 def termselect(request):
+    # เก็บเทอมที่เลือกไว้ที่ termsel
     termsel=str(request.POST.get('selectterm'))
+    # render หน้า home.html พร้อมบอกเทอมที่เลือก
     return render(request, 'home.html', {'term1': termsel})
 
 # Search หาวิชาที่ต้องการดูตัวต่อของวิชานั้น ๆ
 def flow(request):
-    # เก็บ Result เป็นช่องว่างไว้ก่อน
+    # เก็บ Result เป็นช่องว่าง
     Result = ''
-
     # เก็บ text input ที่จะ search เป็น string
     subjects = str(request.POST.get('searchFlow',''))
-
     # ถ้ามีการกดปุ่ม search
     if 'searchSubject' in request.POST :
-
         # ถ้า text input เป็นวิชานี้ ให้ Result เป็นวิชานี้
         # 1 ProFund
         if subjects == "Programming Fundamental" :
@@ -778,8 +779,8 @@ def flow(request):
             Result = "The subject hasn't other subjects to connect the flow"
 
         # Other
-        # ถ้าวิชานั้นไม่มีใน Flow ให้ Result เป็น The subject isn't in the flow
         else :
+            # ถ้าวิชานั้นไม่มีใน Flow ให้ Result เป็น The subject isn't in the flow
             Result = "The subject isn't in the flow"
 
     # ให้ render หน้า flow.html ออกมา โดย render วิชาและ Result ที่เป็นตัวต่อของวิชานั้น ๆ ออกมาด้วย ตามที่ได้กำหนดไว้ใน flow.html
