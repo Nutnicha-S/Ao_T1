@@ -7,10 +7,12 @@
     function drawChart() {
 
       var data = new google.visualization.DataTable();
+      // แกน x เป็น term
       data.addColumn('number', 'Term');
+      // แกน y เป็น GPA
       data.addColumn('number', 'Your GPA');
 
-
+      // GPA term 1-8
       data.addRows([
         [1,  {% for listGPA in GPARES %}
               {{listGPA.GPA_1}}+0
@@ -40,6 +42,7 @@
 
       var options = {
         chart: {
+          // ชื่อกราฟและคำอธิบาย
           title: 'GPA Graph',
           subtitle: 'You grade that you submited will be display in line chart)'
         },
@@ -47,6 +50,7 @@
         height: 500
       };
 
+      // ใช้ google chart
       var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
       chart.draw(data, google.charts.Line.convertOptions(options));
@@ -55,7 +59,8 @@
     </script>
         <body>
     <div id="linechart_material" style="width: 1300px; height: 500px"></div>
-        <h3>Your GPAX : {{res_GPAX}}<h3>
+      <!--GPAX-->  
+      <h3>Your GPAX : {{res_GPAX}}<h3>
   </body>
 
 {% endblock %}
