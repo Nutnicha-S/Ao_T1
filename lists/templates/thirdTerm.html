@@ -2,31 +2,42 @@
 
 
 <hr>
-
 <h2 align="center">TERM 3</h2>
+<!--สร้างตาราง-->
 <table class="table">
   <thead class="thead-dark">
     <tr>
+      <!--แบ่งเป็น 4 columns-->
       <th scope="col">No.</th>
       <th scope="col">Subject</th>
       <th scope="col">Unit</th>
       <th scope="col">Grade</th>
     </tr>
   </thead>
+
+    <!--ใส่ข้อมูลในเทอม 3 ลงตาราง-->
     {% for itemlist in dataterm3 %}
   <tbody>
     <tr>
+      <!--ข้อมูลแรกใส่ ID ของแต่ละตัวลงไปซึ่งเป็นเลข 1-9-->
       <th scope="row">{{itemlist.id}}</th>
+      <!--ข้อมูลทีสองใส่วิชาลงไป-->
       <td>{{itemlist.subject}}</td>
+      <!--ข้อมูลทีสามใส่หน่วยกิตของแต่ละวิชาลงไป-->
       <td>{{itemlist.unit}}</td>
+      <!--ข้อมูลทีสี่ใส่เกรดของแต่ละวิชาลงไป-->
       <td>{{itemlist.Grade}}</td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
+
 <h3>GPA :
+<!--GPA term 3-->
 {% for listGPA in GPARES %}
   {{listGPA.GPA_3}}
 {% endfor %}</h3>
+
+<!--GPAX-->
 <h3>Your GPAX : {{res_GPAX}}<h3>
 {% endblock %}
