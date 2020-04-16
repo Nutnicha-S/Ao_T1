@@ -3,7 +3,11 @@
 <h2>Log in</h2>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p}}
+
+    <!--django's form-->
+    {{ form.as_p }}
+
+    <!--Log in button-->
     <button type="submit" class="btn btn-primary">Log in</button>
 </form>
 {% endblock %}

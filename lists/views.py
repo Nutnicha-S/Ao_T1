@@ -1041,7 +1041,9 @@ def listOfSubject(request) :
             Science and Maths Elective III"""
 
     # render หน้า subject.html ออกมา เรียงตามเทอมนั้น ๆ 
-    return render(request, 'subject.html', {'semister1':listSemister1,'semister2':listSemister2,'semister3':listSemister3,'semister4':listSemister4,'semister5':listSemister5,'semister6':listSemister6,'semister7':listSemister7,'semister8':listSemister8})
+    return render(request, 'subject.html', {'semister1':listSemister1,'semister2':listSemister2,'semister3':listSemister3,
+                                            'semister4':listSemister4,'semister5':listSemister5,'semister6':listSemister6,
+                                            'semister7':listSemister7,'semister8':listSemister8})
 
 # แสดงกราฟ
 def Graph(request):
