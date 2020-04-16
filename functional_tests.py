@@ -12,73 +12,74 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
 
     def test_index(self):
-        #เอิร์ธได้ยินมาว่ามีเว็บในการคำนวณเกรดและอยากจะใช้งาน
-        #จึงเข้าเว็บไปที่หน้า Homepage
-
+        # เธอได้ยินมาว่ามีเว็บในการคำนวณเกรดและอยากจะใช้งาน
+        # จึงเข้าเว็บไปที่หน้า Homepage
         self.browser.get('http://localhost:8000')
         '''Test Only Index'''
-        #เขาสังเกตุว่าชื่อเว็บจะมีคำว่า grade guide
-        # She notices the page title and header mention to-do lists
+
+        # test GradeGuide's header text
+        # เธอสังเกตุว่าชื่อเว็บจะมีคำว่า grade guide
         self.assertIn('', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('GradeGuide', header_text)
 
-        #Check HomePage, Sign Up and Log in Link
+        # test home page link
+        # เธอเห็น link home page ของ GradeGuide
         homepage_link = self.browser.find_element_by_link_text('Home page').text
         self.assertIn('Home page', homepage_link)
 
+        # test sign up link
+        # เธอเห็น link สำหรับ sign up 
         signup_link = self.browser.find_element_by_link_text('Sign up').text
         self.assertIn('Sign up', signup_link)
 
+        # test log in link
+        # เธอเห็น link สำหรับ log in
         login_link = self.browser.find_element_by_link_text('Log in').text
         self.assertIn('Log in', login_link)
 
+        # test Welcome's header text
+        # เธอเห็นคำว่า Welcome to GradeGuide !
         welcome_text = self.browser.find_element_by_tag_name('h2').text
         self.assertIn('Welcome to GradeGuide !', welcome_text)
 
+        # test paragraph text
+        # เธอเห็นคำว่า Total users registered: 
         totaluser_text = self.browser.find_element_by_tag_name('p').text
         self.assertIn('Total users registered:', totaluser_text)
 
-        #Check User Loging in
+        # เธอกด log in 
         login_click = self.browser.find_element_by_link_text('Log in')
         login_click.click()
 
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
-
-        # Check HomePage, Sign Up and Log in Link
-        homepage_link = self.browser.find_element_by_link_text('Home page').text
-        self.assertIn('Home page', homepage_link)
-
-        signup_link = self.browser.find_element_by_link_text('Sign up').text
-        self.assertIn('Sign up', signup_link)
-
-        login_link = self.browser.find_element_by_link_text('Log in').text
-        self.assertIn('Log in', login_link)
-
-        login_h2 = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('Log in', login_h2)
-        #check Label Username:
+        # test username label
+        # เธอเห็นคำว่า Username:
         username_label = self.browser.find_element_by_xpath("//label[@for='id_username']").text
         self.assertIn('Username:', username_label)
-        #check Label Input Box
+
+        # test username's textbox
+        # เธอเห็น textbox ไว้สำหรับกรอกชื่อ
         username_box = self.browser.find_element_by_id("id_username")
         self.assertEqual(
             username_box.get_attribute('type'),
             'text'
         )
-        #check Label Password:
+
+        # test password label
+        # เธอเห็นคำว่า Password:
         password_label = self.browser.find_element_by_xpath("//label[@for='id_password']").text
         self.assertIn('Password:', password_label)
-        #check Label Input Pasword Box
+
+        # test password's textbox
+        # เธอเห็น textbox ไว้สำหรับกรอก password ของเธอลงไป
         password_box = self.browser.find_element_by_id("id_password")
         self.assertEqual(
             password_box.get_attribute('type'),
             'password'
         )
 
-        #check button
+        # test log in button
+        # เธอเห็นปุ่มไว้สำหรับ log in เข้าใช้งาน GradeGuide
         login_button = self.browser.find_element_by_tag_name("button")
         self.assertEqual(
             login_button.get_attribute('type'),
@@ -86,200 +87,117 @@ class NewVisitorTest(unittest.TestCase):
         )
 
     def test_login_fail(self):
-        #BASIC TEST
+        # เธอเข้าเว็บไปที่หน้า Homepage
         self.browser.get('http://localhost:8000')
         '''Test Only Index'''
-		# เขาสังเกตุว่าชื่อเว็บจะมีคำว่า grade guide
-        # She notices the page title and header mention to-do lists
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
 
-        # Check HomePage, Sign Up and Log in Link
-        homepage_link = self.browser.find_element_by_link_text('Home page').text
-        self.assertIn('Home page', homepage_link)
-
-        signup_link = self.browser.find_element_by_link_text('Sign up').text
-        self.assertIn('Sign up', signup_link)
-
-        login_link = self.browser.find_element_by_link_text('Log in').text
-        self.assertIn('Log in', login_link)
-
-        welcome_text = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('Welcome to GradeGuide !', welcome_text)
-
-        totaluser_text = self.browser.find_element_by_tag_name('p').text
-        self.assertIn('Total users registered:', totaluser_text)
-
-        # Check User Loging in
-        login_click = self.browser.find_element_by_link_text('Log in')
-        login_click.click()
-
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
-
-        # Check HomePage, Sign Up and Log in Link
-        homepage_link = self.browser.find_element_by_link_text('Home page').text
-        self.assertIn('Home page', homepage_link)
-
-        signup_link = self.browser.find_element_by_link_text('Sign up').text
-        self.assertIn('Sign up', signup_link)
-
-        login_link = self.browser.find_element_by_link_text('Log in').text
-        self.assertIn('Log in', login_link)
-
-        login_h2 = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('Log in', login_h2)
-        # check Label Username:
+        # test username label
+        # เธอเห็นคำว่า Username:
         username_label = self.browser.find_element_by_xpath("//label[@for='id_username']").text
         self.assertIn('Username:', username_label)
-        # check Label Input Box
+
+        # test username's textbox
+        # เธอเห็น textbox ไว้สำหรับกรอกชื่อ
         username_box = self.browser.find_element_by_id("id_username")
         self.assertEqual(
             username_box.get_attribute('type'),
             'text'
         )
-        # check Label Password:
+
+        # test password label
+        # เธอเห็นคำว่า Password:
         password_label = self.browser.find_element_by_xpath("//label[@for='id_password']").text
         self.assertIn('Password:', password_label)
-        # check Label Input Pasword Box
+
+        # test password's textbox
+        # เธอเห็น textbox ไว้สำหรับกรอก password ของเธอลงไป
         password_box = self.browser.find_element_by_id("id_password")
         self.assertEqual(
             password_box.get_attribute('type'),
             'password'
         )
 
-        # check button
+        # test log in button
+        # เธอเห็นปุ่มไว้สำหรับ log in เข้าใช้งาน GradeGuide
         login_button = self.browser.find_element_by_tag_name("button")
         self.assertEqual(
             login_button.get_attribute('type'),
             'submit'
         )
-        #END BASIC TEST
+
+        # test error message
+        # เธอเห็น error message ว่า Please enter a correct username and password. Note that both fields may be case-sensitive.
         error_message = self.browser.find_element_by_tag_name('ul').text
         self.assertIn('Please enter a correct username and password. Note that both fields may be case-sensitive.',
                       error_message)
 
         time.sleep(20)
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
-
-        # Check HomePage, Sign Up and Log in Link
-        homepage_link = self.browser.find_element_by_link_text('Home page').text
-        self.assertIn('Home page', homepage_link)
-
-        signup_link = self.browser.find_element_by_link_text('Sign up').text
-        self.assertIn('Sign up', signup_link)
-
-        login_link = self.browser.find_element_by_link_text('Log in').text
-        self.assertIn('Log in', login_link)
-
-        error_message = self.browser.find_elements_by_xpath("//ul[@class='errorlist nonfield']").text
-        self.assertIn('Please enter a correct username and password. Note that both fields may be case-sensitive.', error_message)
 
     def test_login_pass(self):
-        #basic test
+        # เธอเข้าเว็บไปที่หน้า Homepage
         self.browser.get('http://localhost:8000')
         '''Test Only Index'''
-        # เขาสังเกตุว่าชื่อเว็บจะมีคำว่า grade guide
-        # She notices the page title and header mention to-do lists
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
 
-        # Check HomePage, Sign Up and Log in Link
-        homepage_link = self.browser.find_element_by_link_text('Home page').text
-        self.assertIn('Home page', homepage_link)
-
-        signup_link = self.browser.find_element_by_link_text('Sign up').text
-        self.assertIn('Sign up', signup_link)
-
-        login_link = self.browser.find_element_by_link_text('Log in').text
-        self.assertIn('Log in', login_link)
-
-        welcome_text = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('Welcome to GradeGuide !', welcome_text)
-
-        totaluser_text = self.browser.find_element_by_tag_name('p').text
-        self.assertIn('Total users registered:', totaluser_text)
-
-        # Check User Loging in
-        login_click = self.browser.find_element_by_link_text('Log in')
-        login_click.click()
-
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
-
-        # Check HomePage, Sign Up and Log in Link
-        homepage_link = self.browser.find_element_by_link_text('Home page').text
-        self.assertIn('Home page', homepage_link)
-
-        signup_link = self.browser.find_element_by_link_text('Sign up').text
-        self.assertIn('Sign up', signup_link)
-
-        login_link = self.browser.find_element_by_link_text('Log in').text
-        self.assertIn('Log in', login_link)
-
-        login_h2 = self.browser.find_element_by_tag_name('h2').text
-        self.assertIn('Log in', login_h2)
-        # check Label Username:
+        # test username label
+        # เธอเห็นคำว่า Username:
         username_label = self.browser.find_element_by_xpath("//label[@for='id_username']").text
         self.assertIn('Username:', username_label)
-        # check Label Input Box
+
+        # test username's textbox
+        # เธอเห็น textbox ไว้สำหรับกรอกชื่อ
         username_box = self.browser.find_element_by_id("id_username")
         self.assertEqual(
             username_box.get_attribute('type'),
             'text'
         )
-        # check Label Password:
+
+        # test password label
+        # เธอเห็นคำว่า Password:
         password_label = self.browser.find_element_by_xpath("//label[@for='id_password']").text
         self.assertIn('Password:', password_label)
-        # check Label Input Pasword Box
+
+        # test password's textbox
+        # เธอเห็น textbox ไว้สำหรับกรอก password ของเธอลงไป
         password_box = self.browser.find_element_by_id("id_password")
         self.assertEqual(
             password_box.get_attribute('type'),
             'password'
         )
 
-        # check button
-        login_button = self.browser.find_element_by_tag_name("button")
+        # test log in button
+        # เธอเห็นปุ่มไว้สำหรับ log in เข้าใช้งาน GradeGuide
         self.assertEqual(
             login_button.get_attribute('type'),
             'submit'
         )
-        #end basic test
 
-        # Check Type Username Pass RIGHT !
+        # เธอกรอก username ลงไปว่า jesselingard
         username_box.send_keys('jesselingard')
+
+        # หลังจากนั้นเธอกรอก password ลงไปว่า lingard123456789
         password_box.send_keys('lingard123456789')
-        # username_box.send_keys('tamtong007')
-        # password_box.send_keys('o87525o135')
+
+        # แล้วจึงคลิกที่ปุ่ม log in เพื่อทำการเข้าใช้งาน
         login_button.click()
-        # Check Redirect !!!!!
-
-        self.assertIn('', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('GradeGuide', header_text)
-
-        # Check HomePage, Sign Up and Log in Link
+        
+        # test redirect to home page link
+        # หลังจาก log in เรียบร้อยแล้ว
+        # เว็บเด้งหน้า home page ของ GradeGuide ขึ้นมาดังเดิม
+        # ดังนั้นเธอจึงเห็นว่าเป็น link home page ของ GradeGuide
         homepage_link = self.browser.find_element_by_link_text('Home page').text
         self.assertIn('Home page', homepage_link)
 
+        # test log out link
+        # และที่เปลี่ยนไปคือตรง log in เปลี่ยนมาเป็น log out แทน
         logout_link = self.browser.find_element_by_link_text('Log out').text
         self.assertIn('Log out', logout_link)
 
+        # test ID's header text
+        # ในส่วนที่เพิ่มมาคือ ID ของผู้ใช้
+        # ในที่นี้เธอใช้ username ในการ log in ว่า jesselingard
+        # เธอจึงเห็นคำว่า ID : jesselingard
         id_text = self.browser.find_element_by_tag_name('h4').text
         self.assertIn('ID : jesselingard', id_text)
-
-        '''Check Click Link
-        homepage_click = self.browser.find_element_by_link_text('Home page')
-        homepage_click.click()
-        time.sleep(2)'''
-
-        '''End of Checking Login'''
 
     def test_subjects_button_flow(self):
         # เธอคลิกเข้ามาที่ link flow
@@ -371,8 +289,9 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(10)
 
         self.fail('Finish the test!')
+        
     def test_home(self):
-        # เมื่อเขากดเข้าไปที่หน้า signup
+        # เมื่อเธอกดเข้าไปที่หน้า signup
         self.browser.get('http://localhost:8000/signup')
 
         username_box = self.browser.find_element_by_id("id_username")
@@ -381,17 +300,22 @@ class NewVisitorTest(unittest.TestCase):
 
         password_box2 = self.browser.find_element_by_id("id_password2")
 
-        # เขาทำการสมัคร username jesselingard
+        # test username ,password and password confirmation textbox
+        # เธอทำการสมัคร username jesselingard
         # password lingard123456789
         # password2 lingard123456789
         username_box.send_keys('jesselingard')
         password_box.send_keys('lingard123456789')
         password_box2.send_keys('lingard123456789')
-        # เขาทำการกดปุ่ม signup
+
+        # test sign up button
+        # เธอทำการกดปุ่ม signup
         signup_button = self.browser.find_element_by_tag_name("button")
         signup_button.click()
         time.sleep(2)
-        # เขาเข้าไปที่หน้า login
+
+        # test log in 's header text
+        # เธอเข้าไปที่หน้า login
         self.browser.get('http://127.0.0.1:8000/accounts/login/')
         header_text = self.browser.find_element_by_tag_name('h2').text
         self.assertIn('Log in', header_text)
@@ -399,32 +323,47 @@ class NewVisitorTest(unittest.TestCase):
         username_login_box = self.browser.find_element_by_id("id_username")
 
         password_login_box = self.browser.find_element_by_id("id_password")
-        # เขาใส่ id password
+
+        # test username and password textbox
+        # เธอใส่ id password
         username_login_box.send_keys('jesselingard')
         password_login_box.send_keys('lingard123456789')
-        # เขากดปุ่ม login
+
+        # test log in button
+        # เธอกดปุ่ม login
         login_button = self.browser.find_element_by_tag_name("button")
         login_button.click()
         time.sleep(2)
-        # เขาเข้าไปที่หน้า homepage
+
+        # test ID's header text 
+        # เธอเข้าไปที่หน้า homepage
         self.browser.get('http://127.0.0.1:8000/home')
         id_user = self.browser.find_element_by_tag_name('h4').text
         self.assertIn('jesselingard', id_user)
-        # เขาใส่ unit
+
+        # test subject's unit
+        # เธอใส่ unit ไป 1 หน่วยกิต
         unit_text = self.browser.find_element_by_id('subject1Unitid')
         unit_text.send_keys('Unit: 1')
-        # เขาใส่ Grade
+
+        # test subject's grade
+        # เธอใส่ Grade C+
         unit_text = self.browser.find_element_by_id('subject1Gradeid')
         unit_text.send_keys('Grade: 2.5&nbsp; (C+)')
         time.sleep(3)
-        # เขาเห็นเกรดแสดงขึ้นมา
+
+        # test submit button
+        # เธอกดปุ่ม submit
         submit_button = self.browser.find_element_by_id("submit")
         submit_button.click()
         time.sleep(3)
+
+        # เธอเห็นเกรดแสดงขึ้นมาว่าเกรด 2.5
         submit_text = self.browser.find_element_by_id('gradeshow').text
         self.assertIn('2.5', submit_text)
         time.sleep(6)
-        # เขาเห็นสาถานะนักศึกษาของเขา
+
+        # เธอเห็นสถานะนักศึกษาของเธอว่าอยู่เกณฑ์ปกติหรือ Normal State
         self.assertIn('Normal State', submit_text)
 
         self.fail('Finish the test!')
