@@ -198,7 +198,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term1.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -307,7 +307,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 2 มีค่าเท่ากับ 0
             if len(Term2.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term2.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -361,7 +361,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term2.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -468,7 +468,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 3 มีค่าเท่ากับ 0
             if len(Term3.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term3.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -522,7 +522,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term3.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -629,7 +629,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 4 มีค่าเท่ากับ 0
             if len(Term4.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term4.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -683,7 +683,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term4.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -791,7 +791,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 5 มีค่าเท่ากับ 0
             if len(Term5.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term5.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -845,7 +845,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term5.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -953,7 +953,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 6 มีค่าเท่ากับ 0
             if len(Term6.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term6.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -1007,7 +1007,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term6.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -1115,7 +1115,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 7 มีค่าเท่ากับ 0
             if len(Term7.objects.all()) == 0 :
-                # ให้ร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term7.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -1169,7 +1169,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term7.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -1276,7 +1276,7 @@ def calGrade(request):
 
             # ถ้าความยาวของวิชาในเทอม 8 มีค่าเท่ากับ 0
             if len(Term8.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term8.objects.create(subject =request.POST['subject1name'],
                                      unit=request.POST['subject1Unit'],
                                      Grade=request.POST['subject1Grade'],
@@ -1330,7 +1330,7 @@ def calGrade(request):
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา ช่องเลือกหน่วยกิต ช่องเลือกเกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
                 Term8.objects.filter(pk=1).update(subject =request.POST['subject1name'],
                                                   unit=request.POST['subject1Unit'], 
                                                   Grade=request.POST['subject1Grade'],
@@ -1631,7 +1631,8 @@ def flow(request):
             # ถ้าวิชานั้นไม่มีใน Flow ให้ Result เป็น The subject isn't in the flow
             Result = "The subject isn't in the flow"
 
-    # ให้ render หน้า flow.html ออกมา โดย render วิชาและ Result ที่เป็นตัวต่อของวิชานั้น ๆ ออกมาด้วย ตามที่ได้กำหนดไว้ใน flow.html
+    # ให้ render หน้า flow.html ออกมา 
+    # โดยให้แสดงชื่อวิชาและตัวต่อของวิชานั้น ๆ ตามที่ได้กำหนดไว้ใน flow.html
     return render(request, 'flow.html',{'subjects':subjects, 'Result':Result})
 
 # รวมทุกวิชาใน flow โดยเรียงตามเทอมในรูป flow
@@ -1906,7 +1907,8 @@ def firstTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
 
-    # render firstTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render firstTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'firstTerm.html', {'dataterm1':dataterm_1,
                                               'GPARES':dataGPA,
                                               'res_GPAX': newGPAX})
@@ -1986,7 +1988,8 @@ def secondTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render secondTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render secondTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'secondTerm.html', {'dataterm2':dataterm_2,
                                                'GPARES':dataGPA,
                                                'res_GPAX': newGPAX})
@@ -2066,7 +2069,8 @@ def thirdTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render thirdTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render thirdTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'thirdTerm.html', {'dataterm3':dataterm_3,
                                               'GPARES':dataGPA,
                                               'res_GPAX': newGPAX})
@@ -2146,7 +2150,8 @@ def fourthTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render fourthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render fourthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'fourthTerm.html', {'dataterm4':dataterm_4,
                                                'GPARES':dataGPA,
                                                'res_GPAX': newGPAX})
@@ -2226,7 +2231,8 @@ def fifthTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render fifthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render fifthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'fifthTerm.html', {'dataterm5':dataterm_5,
                                               'GPARES':dataGPA,
                                               'res_GPAX': newGPAX})
@@ -2306,7 +2312,8 @@ def sixthTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render sixthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render sixthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'sixthTerm.html', {'dataterm6':dataterm_6,
                                               'GPARES':dataGPA,
                                               'res_GPAX': newGPAX})
@@ -2386,7 +2393,8 @@ def seventhTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render seventhTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render seventhTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'seventhTerm.html', {'dataterm7':dataterm_7,
                                                 'GPARES':dataGPA,
                                                 'res_GPAX': newGPAX})
@@ -2466,7 +2474,8 @@ def eightTerm(request):
     # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
     newGPAX = '%.2f' % resGPAX
     
-    # render eighthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชาที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
+    # render eighthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'eightTerm.html', {'dataterm8':dataterm_8,
                                               'GPARES':dataGPA,
                                               'res_GPAX': newGPAX})
