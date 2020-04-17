@@ -1,17 +1,21 @@
-
 {% extends 'layout.html' %}
 {% block content %}
 <html>
     <hr>
     <body>
+        <!--ถ้ามีการ sign up or log in-->
         <p>{% if user.is_authenticated %}
+        <!--ให้แสดง ID username ของผู้ใช้-->
         <h4>ID : {{ user.username }} {{ test }}</h4>
             {% else %}visitor{% endif %}</p>
         <hr>
         <br>
         <p><font size="5" color="B03A2E">{{message}}</font></p>
+
+<!--Grade Calculator-->
 <form action="calGrade" method="POST" >
     {% csrf_token %}
+    <!--เลือกเทอม-->
     Selected your term :
     <select name="subjectTerm" id="subjectTermid" >
     <option value="0"></option>
@@ -27,6 +31,7 @@
 
 </select><br>
     <hr>
+        <!--สร้างตารางเก็บอันดับ วิชา หน่วยกิต และเกรด ของแต่ละวิชา-->
         <table class="table table-hover">
   <thead>
     <tr>
@@ -38,6 +43,7 @@
   </thead>
   <tbody>
     <tr>
+      <!--แบ่งทั้งหมด 9 row สำหรับใส่ชื่อวิชาแรกถึงวิชาที่เก้า พร้อมหน่วยกิตและเกรดของแต่ละวิชา-->
       <th scope="row">1</th>
       <td><input id="subject1" name="subject1name" placeholder="Enter subject"/></td>
       <td><select name="subject1Unit" id="subject1Unitid" >
@@ -59,6 +65,7 @@
             <option value="0">&nbsp; Grade: 0&nbsp; (F)</option>
         </select></td>
     </tr>
+
     <tr>
       <th scope="row">2</th>
       <td><input id="subject2" name="subject2name" placeholder="Enter subject" /></td>
@@ -81,6 +88,7 @@
             <option value="0">&nbsp; Grade: 0&nbsp; (F)</option>
         </select></td>
     </tr>
+
     <tr>
       <th scope="row">3</th>
       <td><input id="subject3" name="subject3name" placeholder="Enter subject" /></td>
@@ -103,6 +111,7 @@
             <option value="0">&nbsp; Grade: 0&nbsp; (F)</option>
         </select></td>
     </tr>
+
       <tr>
       <th scope="row">4</th>
       <td><input id="subject4" name="subject4name" placeholder="Enter subject" /></td>
@@ -125,6 +134,7 @@
             <option value="0">&nbsp; Grade: 0&nbsp; (F)</option>
         </select></td>
     </tr>
+
     <tr>
       <th scope="row">5</th>
       <td><input id="subject5" name="subject5name" placeholder="Enter subject" /></td>
@@ -148,8 +158,6 @@
         </select></td>
     </tr>
 
-
-
       <tr>
       <th scope="row">6</th>
       <td><input id="subject6" name="subject6name" placeholder="Enter subject" /></td>
@@ -172,6 +180,7 @@
             <option value="0">&nbsp; Grade: 0&nbsp; (F)</option>
         </select></td>
     </tr>
+
     <tr>
       <th scope="row">7</th>
       <td><input id="subject7" name="subject7name" placeholder="Enter subject" /></td>
@@ -216,7 +225,8 @@
             <option value="0">&nbsp; Grade: 0&nbsp; (F)</option>
         </select></td>
     </tr>
-        <tr>
+
+    <tr>
       <th scope="row">9</th>
       <td><input id="subject9" name="subject9name" placeholder="Enter subject" /></td>
       <td><select name="subject9Unit" id="subject9Unitid">
@@ -241,18 +251,27 @@
   </tbody>
 </table>
         <br>
+            <!--Submit button-->
             <button type="button" class="btn btn-primary btn-lg" onclick="Submitcal()">Submit</button>
+            <!--Save button-->
             <input type="submit" class="btn btn-secondary btn-lg" value="Save">
         </form>
 
+        <!--กรณีที่ไม่ได้ลงหน่วยกิตและเกรดจะแสดง message ดังที่ได้กล่าวไว้ใน views.py-->
         <p><font size="5" color="B03A2E">{{message}}</font></p>
+        <!--แต่ถ้าลงหน่วยกิตและเกรดเรียบร้อยแล้วก็จะแสดงเกรดในเทอมนั้นและสถานะนักศึกษา-->
         <h1><font size="6" >Your GPA  : {{result}}{{notinput}} <p" id="demo""></p></font></h1>
         <h1><font size="6" >Student Status : <p" id="student_state""></font></p></h1>
 
         <script>
         function Submitcal() {
-            var sumunit = parseInt(document.getElementById("subject1Unitid").value)+parseInt(document.getElementById("subject2Unitid").value)+parseInt(document.getElementById("subject3Unitid").value)+parseInt(document.getElementById("subject4Unitid").value)+parseInt(document.getElementById("subject5Unitid").value)+parseInt(document.getElementById("subject6Unitid").value)+parseInt(document.getElementById("subject7Unitid").value)+parseInt(document.getElementById("subject8Unitid").value);
-
+            // บวกหน่วยกิตทั้งหมด
+            var sumunit = parseInt(document.getElementById("subject1Unitid").value)+parseInt(document.getElementById("subject2Unitid").value)+
+                          parseInt(document.getElementById("subject3Unitid").value)+parseInt(document.getElementById("subject4Unitid").value)+
+                          parseInt(document.getElementById("subject5Unitid").value)+parseInt(document.getElementById("subject6Unitid").value)+
+                          parseInt(document.getElementById("subject7Unitid").value)+parseInt(document.getElementById("subject8Unitid").value);
+            
+            // คูณหน่วยกิตกับเกรดของแต่ละวิชาเก็บไว้เก็บไว้ใน sub1-9
             var sub1 = parseFloat(document.getElementById("subject1Unitid").value)*parseFloat(document.getElementById("subject1Gradeid").value);
             var sub2 = parseFloat(document.getElementById("subject2Unitid").value)*parseFloat(document.getElementById("subject2Gradeid").value);
             var sub3 = parseFloat(document.getElementById("subject3Unitid").value)*parseFloat(document.getElementById("subject3Gradeid").value);
@@ -263,18 +282,28 @@
             var sub8 = parseFloat(document.getElementById("subject8Unitid").value)*parseFloat(document.getElementById("subject8Gradeid").value);
             var sub9 = parseFloat(document.getElementById("subject9Unitid").value)*parseFloat(document.getElementById("subject9Gradeid").value);
 
-
+            // บวก sub1-9 เก็บไว้ใน sumsub
             var sumsub = sub1+sub2+sub3+sub4+sub5+sub6+sub7+sub8+sub9;
 
+            // นำ sumsub หารด้วย sumunit เก็บไว้ใน resultGrade
             var resultGrade = sumsub/sumunit;
+            // ปัดให้เหลือทศนิยม 2 ตำแหน่ง จะได้เกรดของเทอมนี้
             var n = resultGrade.toFixed(2);
+            
           document.getElementById("demo").innerHTML = n;
+          // ถ้าเกรดมากกว่า 2.00 สถานะนักศึกษาจะปกติ หรือ Normal State
           if (resultGrade >= 2.00)
           {var state = "Normal State";}
+
+          // ถ้าเกรดต่ำกว่า 1.50 สถานะนักศึกษาจะพ้นสภาพนักศึกษา หรือ Retired
           else if (resultGrade < 1.5)
           {var state = "Retired";}
+
+          // ถ้าเกรดต่ำกว่า 2.00 สถานะนักศึกษาจะติดโปร หรือ Probation
           else if (resultGrade < 2)
           {var state = "Probation";}
+
+          // other ให้แสดง Please select your grade
           else
           {var state = "Please select your grade";}
           document.getElementById("student_state").innerHTML = state;
