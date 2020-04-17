@@ -2,12 +2,14 @@
 {% block content %}
 <!DOCTYPE html>
 
-{% load static %} <!-- New line -->
+{% load static %}
 
 <html>
     <body>
         <!--static file flow's picture-->
-        <p align="center"><img id="image" name="full_flow_image" src="{% static "viewflow.jpg" %}" alt="" /></p> <!-- New line -->
+        <p align="center"><img id="image" name="full_flow_image" 
+            src="{% static "viewflow.jpg" %}" alt="" />
+        </p>
     </body>
 
 </html>

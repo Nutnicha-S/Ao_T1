@@ -28,27 +28,44 @@
           <h1 align="center">Subjects Search</h1>
           <br>
           <!--Placeholder-->
-          <p><input type="text" placeholder="Type the subject..." name="searchFlow" size="100" id="search_placeholder" />
+          <p><input type="text" placeholder="Type the subject..." name="searchFlow" 
+              size="100" id="search_placeholder" />
           <!--Search button-->
-          <button type="submit" class="btn btn-warning " id="submit_button" name="searchSubject">search</button>
+          <button type="submit" class="btn btn-warning " id="submit_button" 
+              name="searchSubject">search
+          </button>
           <!--Full flow button-->
-          <input type="button" class="btn btn-danger " onclick="window.location.href='picFlow.html'" value="Full Flow" id="fullflow_button"></p>
+          <input type="button" class="btn btn-danger " 
+                 onclick="window.location.href='picFlow.html'" 
+                 value="Full Flow" id="fullflow_button">
+          </p>
 
           <!--วิชาที่ search-->
           <h2 name="subject_head">subject : {{subjects}} </h2>
           <!--Search Result-->
-          <p id="rcorners2"><p2 name="result_search"><font size="5">{{Result|safe}}</font></p2></p>
+          <p id="rcorners2">
+            <p2 name="result_search">
+              <font size="5">{{Result|safe}}</font>
+            </p2>
+          </p>
         </div>
       </form>
     <br>
     
     <hr class="new6">
-    <p1><font size="4" color="red">If you can't remember the subject's name , The Subjects button will help you. :)</font>
+    <p1><font size="4" color="red">If you can't remember the subject's name ,
+                                   The Subjects button will help you. :)
+        </font>
     <!--All subjects button-->
-    <input type="button" class="btn btn-info btn-lg" onclick="window.location.href='subject.html'" value="Subjects" id="subject_button"></p1>
+    <input type="button" class="btn btn-info btn-lg" 
+           onclick="window.location.href='subject.html'" 
+           value="Subjects" id="subject_button">
+    </p1>
     <br>
     <br>
-    <p3>Note : Elective Subjects don't connect to each other but I want to show how many elective subjects are in this flow.</p3>
+    <p3>Note : Elective Subjects don't connect to each other but 
+      I want to show how many elective subjects are in this flow.
+    </p3>
     
   </body>
 </html>
