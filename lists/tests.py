@@ -12,7 +12,8 @@ class SignUpTest(TestCase):
 
     def test_user_signup(self):
         # สร้าง user ทดลองสำหรับ test ขึ้นมา
-        self.example_user = User.objects.create_user(username='Panachai', password='mypasswordisveryeasy',
+        self.example_user = User.objects.create_user(username='Panachai', 
+                                                     password='mypasswordisveryeasy',
                                                      email='panachai@test.com')
         
         # save user นี้ไว้
@@ -26,16 +27,23 @@ class SignUpTest(TestCase):
     def test_many_users_signup(self):
         # สร้าง user ทดลองสำหรับ test ขึ้นมาทั้งหมด 4 users
         # save user เหล่านี้ไว้
-        self.example_user1 = User.objects.create_user(username='Panachai', password='Panachaipasswordisveryeasy',
+        self.example_user1 = User.objects.create_user(username='Panachai', 
+                                                      password='Panachaipasswordisveryeasy',
                                                       email='panachai@test.com')
         self.example_user1.save()
-        self.example_user2 = User.objects.create_user(username='Kristamet', password='Kristametpasswordisveryeasy',
+
+        self.example_user2 = User.objects.create_user(username='Kristamet', 
+                                                      password='Kristametpasswordisveryeasy',
                                                       email='Kristamet@test.com')
         self.example_user2.save()
-        self.example_user3 = User.objects.create_user(username='Nutnicha', password='Nutnichapasswordisveryeasy',
+
+        self.example_user3 = User.objects.create_user(username='Nutnicha', 
+                                                      password='Nutnichapasswordisveryeasy',
                                                       email='Nutnicha@test.com')
         self.example_user3.save()
-        self.example_user4 = User.objects.create_user(username='Watsawat', password='Watsawatpasswordisveryeasy',
+
+        self.example_user4 = User.objects.create_user(username='Watsawat', 
+                                                      password='Watsawatpasswordisveryeasy',
                                                       email='Watsawat@test.com')
         self.example_user4.save()
 
@@ -47,16 +55,22 @@ class SignUpTest(TestCase):
 class LogInTest(TestCase):
     def test_user_login(self):
         # สร้าง user ขึ้นมา
-        User.objects.create_user(username='Panachai', password='Panachaipasswordisveryeasy')
+        User.objects.create_user(username='Panachai', 
+                                 password='Panachaipasswordisveryeasy')
         # log in ด้วย user ที่สร้างขึ้น
-        self.client.login(username="Panachai", password="Panachaipasswordisveryeasy")
+        self.client.login(username="Panachai", 
+                          password="Panachaipasswordisveryeasy")
 
 class GradeCalTest(TestCase):
     def test_gradeCal_can_save_first_term_data(self):
         # สร้าง user ขึ้นมา
         example_user = Userinfo.objects.create(name='example_user ')
+        
         # สร้างข้อมูล วิชา หน่วยกิต และเกรด ของวิชานั้น
-        example_data = Term1.objects.create(subject='example_subject', unit='1', Grade='A')
+        example_data = Term1.objects.create(subject='example_subject', 
+                                            unit='1', 
+                                            Grade='A')
+
         # ให้เพิ่มข้อมูลดังกล่าวลงใน user
         example_user.term1.add(example_data)
         user = Userinfo.objects.all()
@@ -72,14 +86,36 @@ class GradeCalTest(TestCase):
         example_user = Userinfo.objects.create(name='example_user ')
 
         # สร้างข้อมูล วิชา หน่วยกิต และเกรด ของวิชานั้น รวม 8 ข้อมูล 
-        example_data1 = Term1.objects.create(subject='example_subject1', unit='1', Grade='A')
-        example_data2 = Term2.objects.create(subject='example_subject2', unit='2', Grade='B+')
-        example_data3 = Term3.objects.create(subject='example_subject3', unit='3', Grade='B')
-        example_data4 = Term4.objects.create(subject='example_subject4', unit='4', Grade='C')
-        example_data5 = Term5.objects.create(subject='example_subject5', unit='5', Grade='C+')
-        example_data6 = Term6.objects.create(subject='example_subject6', unit='6', Grade='D')
-        example_data7 = Term7.objects.create(subject='example_subject7', unit='7', Grade='D+')
-        example_data8 = Term8.objects.create(subject='example_subject8', unit='8', Grade='F')
+        example_data1 = Term1.objects.create(subject='example_subject1', 
+                                             unit='1', 
+                                             Grade='A')
+
+        example_data2 = Term2.objects.create(subject='example_subject2',
+                                             unit='2', 
+                                             Grade='B+')
+
+        example_data3 = Term3.objects.create(subject='example_subject3',
+                                             unit='3',
+                                             Grade='B')
+
+        example_data4 = Term4.objects.create(subject='example_subject4',
+                                             unit='4', 
+                                             Grade='C')
+
+        example_data5 = Term5.objects.create(subject='example_subject5', 
+                                             unit='5', 
+                                             Grade='C+')
+
+        example_data6 = Term6.objects.create(subject='example_subject6', 
+                                             unit='6', 
+                                             Grade='D')
+        example_data7 = Term7.objects.create(subject='example_subject7', 
+                                             unit='7', 
+                                             Grade='D+')
+
+        example_data8 = Term8.objects.create(subject='example_subject8', 
+                                             unit='8', 
+                                             Grade='F')
 
         # ให้เพิ่มข้อมูลดังกล่าวลงใน user
         example_user.term1.add(example_data1)
@@ -107,7 +143,9 @@ class GradeCalTest(TestCase):
         # สร้าง user ขึ้นมา
         example_user = Userinfo.objects.create(name='example_user ')
         # สร้าง GPA ขึ้นมารวม 8 เทอม
-        example_GPA_data = GPA.objects.create(GPA_1 = "4",GPA_2 = "3.5",GPA_3 = "3",GPA_4 = "2.5",GPA_5 = "2",GPA_6 = "1.5",GPA_7 = "1",GPA_8 = "0.5")
+        example_GPA_data = GPA.objects.create(GPA_1 = "4",GPA_2 = "3.5",GPA_3 = "3",
+                                              GPA_4 = "2.5",GPA_5 = "2",GPA_6 = "1.5",
+                                              GPA_7 = "1",GPA_8 = "0.5")
         # ให้เพิ่มข้อมูลดังกล่าวลงใน user
         example_user.gpa.add(example_GPA_data)
         user = Userinfo.objects.all()

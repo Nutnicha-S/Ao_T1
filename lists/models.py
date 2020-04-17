@@ -23,7 +23,8 @@ class Userinfo(models.Model):
     def __str__(self):
         return self.name
 
-# ให้แต่ละเทอมเก็บข้อมูล วิชา หน่วยกิต เกรด ของแต่ละวิชา และ GPA ในเทอมนั้น ๆ ไว้ รวมทั้งหมด 8 เทอม
+# ให้แต่ละเทอมเก็บข้อมูล วิชา หน่วยกิต เกรด ของแต่ละวิชา 
+# และ GPA ในเทอมนั้น ๆ ไว้ รวมทั้งหมด 8 เทอม
 class Term1(models.Model):
     subject = models.CharField(max_length=255)
     unit = models.CharField(max_length=255)

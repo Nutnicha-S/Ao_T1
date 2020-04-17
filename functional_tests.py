@@ -54,7 +54,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # test username label
         # เธอเห็นคำว่า Username:
-        username_label = self.browser.find_element_by_xpath("//label[@for='id_username']").text
+        username_label = self.browser.find_element_by_xpath(
+            "//label[@for='id_username']"
+        ).text
         self.assertIn('Username:', username_label)
 
         # test username's textbox
@@ -67,7 +69,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # test password label
         # เธอเห็นคำว่า Password:
-        password_label = self.browser.find_element_by_xpath("//label[@for='id_password']").text
+        password_label = self.browser.find_element_by_xpath(
+            "//label[@for='id_password']"
+        ).text
         self.assertIn('Password:', password_label)
 
         # test password's textbox
@@ -93,7 +97,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # test username label
         # เธอเห็นคำว่า Username:
-        username_label = self.browser.find_element_by_xpath("//label[@for='id_username']").text
+        username_label = self.browser.find_element_by_xpath(
+            "//label[@for='id_username']"
+        ).text
         self.assertIn('Username:', username_label)
 
         # test username's textbox
@@ -106,7 +112,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # test password label
         # เธอเห็นคำว่า Password:
-        password_label = self.browser.find_element_by_xpath("//label[@for='id_password']").text
+        password_label = self.browser.find_element_by_xpath(
+            "//label[@for='id_password']"
+        ).text
         self.assertIn('Password:', password_label)
 
         # test password's textbox
@@ -126,9 +134,10 @@ class NewVisitorTest(unittest.TestCase):
         )
 
         # test error message
-        # เธอเห็น error message ว่า Please enter a correct username and password. Note that both fields may be case-sensitive.
+        # เธอเห็น error message 
         error_message = self.browser.find_element_by_tag_name('ul').text
-        self.assertIn('Please enter a correct username and password. Note that both fields may be case-sensitive.',
+        self.assertIn("""Please enter a correct username and password. 
+                      Note that both fields may be case-sensitive.""",
                       error_message)
 
         time.sleep(20)
@@ -140,7 +149,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # test username label
         # เธอเห็นคำว่า Username:
-        username_label = self.browser.find_element_by_xpath("//label[@for='id_username']").text
+        username_label = self.browser.find_element_by_xpath(
+            "//label[@for='id_username']"
+        ).text
         self.assertIn('Username:', username_label)
 
         # test username's textbox
@@ -153,7 +164,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # test password label
         # เธอเห็นคำว่า Password:
-        password_label = self.browser.find_element_by_xpath("//label[@for='id_password']").text
+        password_label = self.browser.find_element_by_xpath(
+            "//label[@for='id_password']"
+        ).text
         self.assertIn('Password:', password_label)
 
         # test password's textbox
@@ -211,7 +224,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # เธอเห็นประโยคที่อยู่ก่อนหน้าปุ่ม subjects
         defination = self.browser.find_element_by_tag_name('p1').text
-        self.assertEqual("If you can't remember the subject's name , The Subjects button will help you. :)",defination)
+        self.assertEqual("If you can't remember the subject's name , The Subjects button will help you. :)",
+                        defination
+                        )
 
         # test subjects button
         # เธอจำชื่อวิชาไม่ได้
@@ -252,19 +267,24 @@ class NewVisitorTest(unittest.TestCase):
 
         # test input Search text
         # เธอเห็นหัวข้อ subject
-        # หลังจากที่เธอกด search แล้ว เธอพบว่าวิชาที่เธฮ search ไปปรากฏอยู่หลังหัวข้อ subject
+        # หลังจากที่เธอกด search แล้ว 
+        # เธอพบว่าวิชาที่เธv search ไปปรากฏอยู่หลังหัวข้อ subject
         subject_head = self.browser.find_element_by_tag_name('h2').text
         self.assertEqual('subject : Programming Fundamental', subject_head)
 
         # test search result
         # เธอเห็นผลของการ search ของเธอ หลังจากที่กดปุ่ม search ไป
         result_search = self.browser.find_element_by_tag_name('p2').text
-        self.assertEqual("Semister2 : Algorithms and Data Structures\nSemister5 : Operating Systems",result_search)
+        self.assertEqual("""Semister2 : Algorithms and Data Structures\nSemister5 : Operating Systems""",
+                        result_search
+                        )
 
         # test Note
         # เธอเห็นประโยคด้านล่างเกี่ยวกับวิชาเลือก
         note = self.browser.find_element_by_tag_name('p3').text
-        self.assertEqual("Note : Elective Subjects don't connect to each other but I want to show how many elective subjects are in this flow.", note)
+        self.assertEqual("Note : Elective Subjects don't connect to each other but I want to show how many elective subjects are in this flow.",
+                        note
+                        )
 
         self.fail('Finish the test!')
         
