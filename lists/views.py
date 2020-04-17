@@ -11,12 +11,12 @@ def home_page(request):
     return render(request, 'home.html')
 
 # count user ที่มา register
-def register(request):
-    # เก็บ GPA ลง dataGPA
-    dataGPA = GPA.objects.all()
+def count_user_register(request):
+    # เก็บ GPA ลง DATA_GPA
+    DATA_GPA = GPA.objects.all()
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0,)
@@ -61,13 +61,13 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 # calculate the grade
-def calGrade(request):
-    term1 = Term1()
-    term2 = Term2()
-    # เก้บ Plese check your infromation before saving. ไว้ใน not_input
+def grade_calculator(request):
+    term_1 = Term1()
+    term_2 = Term2()
+    # เก็บ Plese check your infromation before saving. ไว้ใน not_input
     not_input = "Plese check your infromation before saving."
-    # บวกหน่วยกิตกับเกรดของทุกวิชาเก็บไว้ที่ checkinput
-    checkinput = ( float(request.POST.get('subject1Unit'))
+    # บวกหน่วยกิตกับเกรดของทุกวิชาเก็บไว้ที่ check_input
+    check_input = ( float(request.POST.get('subject1Unit'))
                  + float(request.POST.get('subject1Grade'))
                  + float(request.POST.get('subject2Unit'))
                  + float(request.POST.get('subject2Grade'))
@@ -92,41 +92,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 1 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 1 (ถ้าเลือกเทอม 1)
         if request.POST.get('subjectTerm') == "1":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
 
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -137,10 +137,11 @@ def calGrade(request):
                       + float(request.POST.get('subject9Unit')) )
             
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 1 มีค่าเท่ากับ 0
             if len(Term1.objects.all()) == 0 :
@@ -257,40 +258,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 2 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 2 (ถ้าเลือกเทอม 2)
         if request.POST.get('subjectTerm') == "2":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -299,11 +301,13 @@ def calGrade(request):
                       + float(request.POST.get('subject7Unit'))
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
+            
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 2 มีค่าเท่ากับ 0
             if len(Term2.objects.all()) == 0 :
@@ -418,40 +422,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 3 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 3 (ถ้าเลือกเทอม 3)
         if request.POST.get('subjectTerm') == "3":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -460,11 +465,13 @@ def calGrade(request):
                       + float(request.POST.get('subject7Unit'))
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
+            
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 3 มีค่าเท่ากับ 0
             if len(Term3.objects.all()) == 0 :
@@ -579,40 +586,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 4 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 4 (ถ้าเลือกเทอม 4)
         if request.POST.get('subjectTerm') == "4":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -621,11 +629,13 @@ def calGrade(request):
                       + float(request.POST.get('subject7Unit'))
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
+            
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 4 มีค่าเท่ากับ 0
             if len(Term4.objects.all()) == 0 :
@@ -741,40 +751,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 5 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 5 (ถ้าเลือกเทอม 5)                
         if request.POST.get('subjectTerm') == "5":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -783,11 +794,13 @@ def calGrade(request):
                       + float(request.POST.get('subject7Unit'))
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
+            
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 5 มีค่าเท่ากับ 0
             if len(Term5.objects.all()) == 0 :
@@ -903,40 +916,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 6 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 6 (ถ้าเลือกเทอม 6)   
         if request.POST.get('subjectTerm') == "6":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -945,11 +959,13 @@ def calGrade(request):
                       + float(request.POST.get('subject7Unit'))
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
+            
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 6 มีค่าเท่ากับ 0
             if len(Term6.objects.all()) == 0 :
@@ -1065,40 +1081,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 7 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 7 (ถ้าเลือกเทอม 7)   
         if request.POST.get('subjectTerm') == "7":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -1108,10 +1125,11 @@ def calGrade(request):
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
 
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 7 มีค่าเท่ากับ 0
             if len(Term7.objects.all()) == 0 :
@@ -1226,40 +1244,41 @@ def calGrade(request):
         # ------------------------------------------------------ Term 8 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 8 (ถ้าเลือกเทอม 8)   
         if request.POST.get('subjectTerm') == "8":
-            # ถ้า checkinput รวมแล้วมีค่าเท่ากับ 0.0
-            if checkinput == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร notinput ที่ได้กำหนดไว้ข้างต้น
+            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
+            if check_input == 0.0:
+                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
                 return render(request, 'home.html', {'notinput': not_input})
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub1 - sub9 ตามลำดับ
-            sub1 = ( float(request.POST.get('subject1Unit'))
+
+            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+            sub_1 = ( float(request.POST.get('subject1Unit'))
                    * float(request.POST.get('subject1Grade')) )
 
-            sub2 = ( float(request.POST.get('subject2Unit'))
+            sub_2 = ( float(request.POST.get('subject2Unit'))
                    * float(request.POST.get('subject2Grade')) )
 
-            sub3 = ( float(request.POST.get('subject3Unit'))
+            sub_3 = ( float(request.POST.get('subject3Unit'))
                    * float(request.POST.get('subject3Grade')) )
 
-            sub4 = ( float(request.POST.get('subject4Unit'))
+            sub_4 = ( float(request.POST.get('subject4Unit'))
                    * float(request.POST.get('subject4Grade')) )
 
-            sub5 = ( float(request.POST.get('subject5Unit'))
+            sub_5 = ( float(request.POST.get('subject5Unit'))
                    * float(request.POST.get('subject5Grade')) )
 
-            sub6 = ( float(request.POST.get('subject6Unit'))
+            sub_6 = ( float(request.POST.get('subject6Unit'))
                    * float(request.POST.get('subject6Grade')) )
 
-            sub7 = ( float(request.POST.get('subject7Unit'))
+            sub_7 = ( float(request.POST.get('subject7Unit'))
                    * float(request.POST.get('subject7Grade')) )
 
-            sub8 = ( float(request.POST.get('subject8Unit'))
+            sub_8 = ( float(request.POST.get('subject8Unit'))
                    * float(request.POST.get('subject8Grade')) )
 
-            sub9 = ( float(request.POST.get('subject9Unit'))
+            sub_9 = ( float(request.POST.get('subject9Unit'))
                    * float(request.POST.get('subject9Grade')) )
 
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sumunit
-            sumunit = ( float(request.POST.get('subject1Unit'))
+            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+            sum_unit = ( float(request.POST.get('subject1Unit'))
                       + float(request.POST.get('subject2Unit'))
                       + float(request.POST.get('subject3Unit'))
                       + float(request.POST.get('subject4Unit'))
@@ -1268,11 +1287,12 @@ def calGrade(request):
                       + float(request.POST.get('subject7Unit'))
                       + float(request.POST.get('subject8Unit'))
                       + float(request.POST.get('subject9Unit')) )
-
-            # นำ sub1 บวกไปจนถึง sub9 เก็บไว้ที่ sumsub
-            sumsub = sub1 + sub2 + sub3 + sub4 + sub5 + sub6 + sub7 + sub8 + sub9
-            # นำ sumsub หารด้วย sumunit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sumsub / sumunit
+            
+            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+                      + sub_6 + sub_7 + sub_8 + sub_9)
+            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
+            res = sum_sub / sum_unit
 
             # ถ้าความยาวของวิชาในเทอม 8 มีค่าเท่ากับ 0
             if len(Term8.objects.all()) == 0 :
@@ -1400,245 +1420,245 @@ def termselect(request):
     return render(request, 'home.html', {'term1': termsel})
 
 # Search หาวิชาที่ต้องการดูตัวต่อของวิชานั้น ๆ
-def flow(request):
-    # เก็บ Result เป็นช่องว่าง
-    Result = ''
+def search_subjects_in_the_flow(request):
+    # เก็บ result เป็นช่องว่าง
+    result = ''
     # เก็บ text input ที่จะ search เป็น string
     subjects = str(request.POST.get('searchFlow',''))
     # ถ้ามีการกดปุ่ม search
     if 'searchSubject' in request.POST :
-        # ถ้า text input เป็นวิชานี้ ให้ Result เป็นวิชานี้
+        # ถ้า text input เป็นวิชานี้ ให้ result เป็นวิชานี้
         # 1 ProFund
         if subjects == "Programming Fundamental" :
-            Result = """Semister2 : Algorithms and Data Structures <br />
+            result = """Semister2 : Algorithms and Data Structures <br />
             Semister5 : Operating Systems"""
 
         # 2 MathI
         elif subjects == "Engineering Mathematics I" :
-            Result = """Semister2 : Math II <br />
+            result = """Semister2 : Math II <br />
             Semister3 : Statistics for Computer Engineer"""
 
         # 3 ComExplo
         elif subjects == "Computer Engineering Exploration" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 4 PhysicsI
         elif subjects == "Physics I" :
-            Result = "Semister2 : Physics II"
+            result = "Semister2 : Physics II"
 
         # 5 PhyLabI
         elif subjects == "Physics Laboratory I" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 6 EnglishI
         elif subjects == "Language Elective Course I" :
-            Result = "Language Elective Course II"
+            result = "Language Elective Course II"
 
         # 7 TableTennis
         elif subjects == "Physical Education Elective Course I" :
-            Result = "Physical Education Elective Course II"
+            result = "Physical Education Elective Course II"
 
         # 8 ManSo
         elif subjects == "Social Sciences Elective Course" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 9 Intro
         elif subjects == "Introduction to Engineer" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 10 Circuit
         elif subjects == "Electric Circuit Theory" :
-            Result = "Semister4 : Analog and Digital Electronics"
+            result = "Semister4 : Analog and Digital Electronics"
 
         # 11 CircuitLab
         elif subjects == "Electric Circuit Lab" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 12 Algo
         elif subjects == "Algorithms and Data Structure" :
-            Result = """Semister3 : Software Development Practice I <br />
+            result = """Semister3 : Software Development Practice I <br />
             Semister5 : Computer Organization <br />
             Semister6 : Database Systems"""
 
         # 13 Work Ethics
         elif subjects == "Work Ethics" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 14 MathII
         elif subjects == "Engineering Mathematics II" :
-            Result = """Semister3 : Discrete Mathematics <br />
+            result = """Semister3 : Discrete Mathematics <br />
             Semister3 : Introduction to Signals and System"""
 
         # 15 PhysicsII
         elif subjects == "Physics II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 16 PhyLab2
         elif subjects == "Physics Laboratory II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 17 EnglishII
         elif subjects == "Language Elective Course II" :
-            Result = "Language Elective Course III"
+            result = "Language Elective Course III"
 
         # 18 Basketball
         elif subjects == "Physical Education Elective Course II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 19 Stat
         elif subjects == "Statistics for Computer Engineer" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 20 Signal
         elif subjects == "Introduction to Signals and System" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 21 Digital
         elif subjects == "Logic Design of Digital System" :
-            Result = """Semister3 : Digital System Design Laboratory <br />
+            result = """Semister3 : Digital System Design Laboratory <br />
             Semister4 : Computer Organization"""
 
         # 22 DigiLab
         elif subjects == "Digital System Design Laboratory" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 23 SoftwareI
         elif subjects == "Software Development Practice I" :
-            Result = "Semister4 : Software Development Practice II"
+            result = "Semister4 : Software Development Practice II"
 
         # 24 Discrete Math
         elif subjects == "Discrete Mathematics" :
-            Result = "Semister6 : Database Systems"
+            result = "Semister6 : Database Systems"
 
         # 25 PhyLife
         elif subjects == "Science and Maths Elective I" :
-            Result = "Science and Maths Elective II"
+            result = "Science and Maths Elective II"
 
         # 26 SoftwareII
         elif subjects == "Software Development Practice II" :
-            Result = "Semister5 : Software Engineering"
+            result = "Semister5 : Software Engineering"
 
         # 27 NetworkI
         elif subjects == "Computer Networks I" :
-            Result = "Semister5 : Computer Networks II"
+            result = "Semister5 : Computer Networks II"
 
         # 28 ComOr
         elif subjects == "Computer Organization" :
-            Result = "Semister5 : Embedded System Design"
+            result = "Semister5 : Embedded System Design"
 
         # 29 Ubi
         elif subjects == "Ubiquitous Computing" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 30 Analog
         elif subjects == "Analog and Digital Electronics" :
-            Result = "Semister5 : Analog and Digital Electronics Lab"
+            result = "Semister5 : Analog and Digital Electronics Lab"
 
         # 31 GenMath
         elif subjects == "Science and Maths Elective II" :
-            Result = "Science and Maths Elective III"
+            result = "Science and Maths Elective III"
 
         # 32 SoftEng
         elif subjects == "Software Engineering" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 33 NetworkII
         elif subjects == "Computer Networks II" :
-            Result = "Semister6 : Computer Networks Lab"
+            result = "Semister6 : Computer Networks Lab"
 
         # 34 OS
         elif subjects == "Operating Systems" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 35 Embedded
         elif subjects == "Embedded System Design" :
-            Result = "Semister6 : Embedded System Design Laboratory"
+            result = "Semister6 : Embedded System Design Laboratory"
 
         # 36 AnalogLab
         elif subjects == "Analog and Digital Electronics Lab" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 37 Language Elective III
         elif subjects == "Language Elective Course III" :
-            Result = "Language Elective Course IV"
+            result = "Language Elective Course IV"
 
         # 38 Database
         elif subjects == "Database Systems" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 39 NetworkLab
         elif subjects == "Computer Networks Lab" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 40 EmbeddedLab
         elif subjects == "Embedded System Design Laboratory" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 41 Language Elective IV
         elif subjects == "Language Elective Course IV" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 42 Computer Eng. Elective Course I
         elif subjects == "Computer Eng. Elective Course I" :
-            Result = "Computer Eng. Elective Course II"
+            result = "Computer Eng. Elective Course II"
 
         # 43 Computer Eng. Elective Course II
         elif subjects == "Computer Eng. Elective Course II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 44 Humanities Elective Course I
         elif subjects == "Humanities Elective Course I" :
-            Result = "Humanities Elective Course II"
+            result = "Humanities Elective Course II"
 
         # 45 ProjectI
         elif subjects == "Project I" :
-            Result = "Semister8 : Project II"
+            result = "Semister8 : Project II"
 
         # 46 Free Elective Course I
         elif subjects == "Free Elective Course I" :
-            Result = "Free Elective Course I"
+            result = "Free Elective Course I"
 
         # 47 Humanities Elective Course II
         elif subjects == "Humanities Elective Course II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 48 Computer Eng. Elective Course III
         elif subjects == "Computer Eng. Elective Course III" :
-            Result = "Computer Eng. Elective Course IV"
+            result = "Computer Eng. Elective Course IV"
 
         # 49 Computer Eng. Elective Course IV
         elif subjects == "Computer Eng. Elective Course IV" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 50 ProjectII
         elif subjects == "Project II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 51 Computer Eng. Seminar
         elif subjects == "Computer Eng. Seminar" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 52 Free Elective Course II
         elif subjects == "Free Elective Course II" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # 53 Science and Maths Elective III
         elif subjects == "Science and Maths Elective III" :
-            Result = "The subject hasn't other subjects to connect the flow"
+            result = "The subject hasn't other subjects to connect the flow"
 
         # Other
         else :
             # ถ้าวิชานั้นไม่มีใน Flow ให้ Result เป็น The subject isn't in the flow
-            Result = "The subject isn't in the flow"
+            result = "The subject isn't in the flow"
 
     # ให้ render หน้า flow.html ออกมา 
     # โดยให้แสดงชื่อวิชาและตัวต่อของวิชานั้น ๆ ตามที่ได้กำหนดไว้ใน flow.html
-    return render(request, 'flow.html',{'subjects':subjects, 'Result':Result})
+    return render(request, 'flow.html',{'subjects':subjects, 'Result':result})
 
 # รวมทุกวิชาใน flow โดยเรียงตามเทอมในรูป flow
-def listOfSubject(request) :
+def list_of_subjects(request) :
     # term 1
-    listSemister1 = """ Programming Fundamental<br />
+    first_semister = """ Programming Fundamental<br />
             Engineering Mathematics I<br />
             Computer Engineering Exploration<br />
             Physics I<br />
@@ -1649,7 +1669,7 @@ def listOfSubject(request) :
             Introduction to Engineer<br />"""
 
     # term 2
-    listSemister2 = """Electric Circuit Theory<br />
+    second_semister = """Electric Circuit Theory<br />
             Electric Circuit Lab<br />
             Algorithms and Data Structure<br />
             Work Ethics<br />
@@ -1660,7 +1680,7 @@ def listOfSubject(request) :
             Physical Education Elective Course II<br />"""
 
     # term 3
-    listSemister3 = """Statistics for Computer Engineer<br />
+    third_semister = """Statistics for Computer Engineer<br />
             Introduction to Signals and System<br />
             Logic Design of Digital System<br />
             Digital System Design Laboratory<br />
@@ -1669,7 +1689,7 @@ def listOfSubject(request) :
             Science and Maths Elective I<br />"""
 
     # term 4
-    listSemister4 = """Software Development Practice II<br />
+    fourth_semister = """Software Development Practice II<br />
             Computer Networks I<br />
             Computer Organization<br />
             Ubiquitous Computing<br />
@@ -1677,7 +1697,7 @@ def listOfSubject(request) :
             Science and Maths Elective II<br />"""
 
     # term 5
-    listSemister5 = """Software Engineering<br />
+    fifth_semister = """Software Engineering<br />
             Computer Networks II<br />
             Operating Systems<br />
             Embedded System Design<br />
@@ -1685,7 +1705,7 @@ def listOfSubject(request) :
             Language Elective Course III<br />"""
 
     # term 6
-    listSemister6 = """Database Systems<br />
+    sixth_semister = """Database Systems<br />
             Computer Networks Lab<br />
             Embedded System Design Laboratory<br />
             Language Elective Course IV<br />
@@ -1694,54 +1714,54 @@ def listOfSubject(request) :
             Humanities Elective Course I<br />"""
 
     # term 7
-    listSemister7 = """Project I<br />
+    seventh_semister = """Project I<br />
             Free Elective Course I<br />
             Humanities Elective Course II<br />
             Computer Eng. Elective Course III<br />
             Computer Eng. Elective Course IV<br />"""
 
     # term 8
-    listSemister8 = """Project II<br />
+    eighth_semister = """Project II<br />
             Computer Eng. Seminar<br />
             Free Elective Course II<br />
             Science and Maths Elective III"""
 
     # render หน้า subject.html ออกมา เรียงตามเทอมนั้น ๆ 
-    return render(request, 'subject.html', {'semister1':listSemister1,
-                                            'semister2':listSemister2,
-                                            'semister3':listSemister3,
-                                            'semister4':listSemister4,
-                                            'semister5':listSemister5,
-                                            'semister6':listSemister6,
-                                            'semister7':listSemister7,
-                                            'semister8':listSemister8})
+    return render(request, 'subject.html', {'semister1':first_semister,
+                                            'semister2':second_semister,
+                                            'semister3':third_semister,
+                                            'semister4':fourth_semister,
+                                            'semister5':fifth_semister,
+                                            'semister6':sixth_semister,
+                                            'semister7':seventh_semister,
+                                            'semister8':eighth_semister} )
 
 # แสดงกราฟ
-def Graph(request):
+def graph(request):
     # ให้ค่า countunit เป็น 0
-    countunit = 0
+    COUNT_UNIT = 0
     # ให้ค่า GPAX เป็น 0
     GPAX = 0
     # เก็บ ชื่อวิชา หน่วยกิต และเกรด ของแต่ละเทอมไว้ใน dataterm_1 - dataterm_9 ตามลำดับ
-    dataterm_1 = Term1.objects.all()
-    dataterm_2 = Term2.objects.all()
-    dataterm_3 = Term3.objects.all()
-    dataterm_4 = Term4.objects.all()
-    dataterm_5 = Term5.objects.all()
-    dataterm_6 = Term6.objects.all()
-    dataterm_7 = Term7.objects.all()
-    dataterm_8 = Term8.objects.all()
-    # เก็บ GPA ทั้วหมดไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+    first_dataterm = Term1.objects.all()
+    second_dataterm = Term2.objects.all()
+    third_dataterm = Term3.objects.all()
+    fourth_dataterm = Term4.objects.all()
+    fifth_dataterm = Term5.objects.all()
+    sixth_dataterm = Term6.objects.all()
+    seventh_dataterm = Term7.objects.all()
+    eighth_dataterm = Term8.objects.all()
+    # เก็บ GPA ทั้วหมดไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0, 
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
     
-    # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
+    # loop สำหรับ i ใน DATA_GPA
+    for i in DATA_GPA:
         # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
         GPAX = float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4) +\
                float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8)
@@ -1749,739 +1769,748 @@ def Graph(request):
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
         # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
     # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
 
     # render Graph.html ให้แสดงข้อมูลตามเทอม โดยมีเส้นกราฟ GPA ระบุไว้ พร้อมแสดง GPAX
-    return render(request, 'Graph.html', {'dataterm1': dataterm_1,
-                                          'dataterm2': dataterm_2,
-                                          'dataterm3': dataterm_3, 
-                                          'dataterm4': dataterm_4,
-                                          'dataterm5': dataterm_5, 
-                                          'dataterm6': dataterm_6,
-                                          'dataterm7': dataterm_7, 
-                                          'dataterm8': dataterm_8,
-                                          'GPARES': dataGPA, 
-                                          'res_GPAX': newGPAX})
+    return render(request, 'Graph.html', {'dataterm1': first_dataterm,
+                                          'dataterm2': second_dataterm,
+                                          'dataterm3': third_dataterm, 
+                                          'dataterm4': fourth_dataterm,
+                                          'dataterm5': fifth_dataterm, 
+                                          'dataterm6': sixth_dataterm,
+                                          'dataterm7': seventh_dataterm, 
+                                          'dataterm8': eighth_dataterm,
+                                          'GPARES': DATA_GPA, 
+                                          'res_GPAX': NEW_GPAX})
 
 # เลือกเทอมเพื่อแสดงผลลัพธ์
-def Result(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def result(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
 
     # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm ของแต่ละเทอม
-    dataterm_1 = Term1.objects.all()
-    dataterm_2 = Term2.objects.all()
+    first_dataterm = Term1.objects.all()
+    second_dataterm = Term2.objects.all()
 
     # render Result.html พร้อมแสดง GPA ของแต่ละเทอม พร้อม GPAX
-    return render(request, 'Result.html',{'dataterm1':dataterm_1,
-                                          'dataterm2':dataterm_2,
-                                          'GPARES':dataGPA})
+    return render(request, 'Result.html',{'dataterm1':first_dataterm,
+                                          'dataterm2':second_dataterm,
+                                          'GPARES':DATA_GPA})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 1 และ GPAX 
-def firstTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def first_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_1 = Term1.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    first_dataterm = Term1.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
-
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
+    
     # render firstTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'firstTerm.html', {'dataterm1':dataterm_1,
-                                              'GPARES':dataGPA,
-                                              'res_GPAX': newGPAX})
-
+    return render(request, 'firstTerm.html', {'dataterm1':first_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
+    
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 2 และ GPAX 
-def secondTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def second_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_2 = Term2.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    second_dataterm = Term2.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
     # render secondTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'secondTerm.html', {'dataterm2':dataterm_2,
-                                               'GPARES':dataGPA,
-                                               'res_GPAX': newGPAX})
+    return render(request, 'secondTerm.html', {'dataterm2':second_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 3 และ GPAX 
-def thirdTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def third_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_3 = Term3.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    third_dataterm = Term3.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
     # render thirdTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'thirdTerm.html', {'dataterm3':dataterm_3,
-                                              'GPARES':dataGPA,
-                                              'res_GPAX': newGPAX})
+    return render(request, 'thirdTerm.html', {'dataterm3':third_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 4 และ GPAX 
-def fourthTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def fourth_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_4 = Term4.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    fourth_dataterm = Term4.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
     # render fourthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'fourthTerm.html', {'dataterm4':dataterm_4,
-                                               'GPARES':dataGPA,
-                                               'res_GPAX': newGPAX})
+    return render(request, 'fourthTerm.html', {'dataterm4':fourth_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 5 และ GPAX 
-def fifthTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def fifth_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_5 = Term5.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    fifth_dataterm = Term5.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
     # render fifthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'fifthTerm.html', {'dataterm5':dataterm_5,
-                                              'GPARES':dataGPA,
-                                              'res_GPAX': newGPAX})
+    return render(request, 'fifthTerm.html', {'dataterm5':fifth_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 6 และ GPAX 
-def sixthTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def sixth_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_6 = Term6.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    sixth_dataterm = Term6.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
     # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
     # render sixthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'sixthTerm.html', {'dataterm6':dataterm_6,
-                                              'GPARES':dataGPA,
-                                              'res_GPAX': newGPAX})
+    return render(request, 'sixthTerm.html', {'dataterm6':sixth_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 7 และ GPAX 
-def seventhTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def seventh_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_7 = Term7.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    seventh_dataterm = Term7.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
-        # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    # loop สำหรับ i ใน dataGPA
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
     # render seventhTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'seventhTerm.html', {'dataterm7':dataterm_7,
-                                                'GPARES':dataGPA,
-                                                'res_GPAX': newGPAX})
+    return render(request, 'seventhTerm.html', {'dataterm7':seventh_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 8 และ GPAX 
-def eightTerm(request):
-    # เก็บ GPA ไว้ใน dataGPA
-    dataGPA = GPA.objects.all()
+def eight_term(request):
+    # เก็บ GPA ไว้ใน DATA_GPA
+    DATA_GPA = GPA.objects.all()
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    dataterm_8 = Term8.objects.all()
-    # ให้ค่า countunit เป็น 0
-    countunit = 0
+    eighth_dataterm = Term8.objects.all()
+    # ให้ค่า COUNT_UNIT เป็น 0
+    COUNT_UNIT = 0
 
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(dataGPA) == 0:
+    # ถ้าความยาวของ DATA_GPA เป็น 0
+    if len(DATA_GPA) == 0:
         # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
         GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
                            GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
 
-        # loop สำหรับ i ใน dataGPA
-    for i in dataGPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
+    # loop สำหรับ i ใน dataGPA
+    for i in DATA_GPA:
+        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
         GPAX = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
                + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in dataGPA:
+        # loop สำหรับ unit ใน data_gpa
+        for unit in data_gpa:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
             if unit.GPA_2 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
 
             # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
             if unit.GPA_3 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
             if unit.GPA_4 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
             # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
             if unit.GPA_5 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 6 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
             if unit.GPA_6 != "0" :
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 7 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
             if unit.GPA_7 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
             
-            # ถ้า GPA ในะเทอม 8 ไม่เท่ากับ 0 
+            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
             if unit.GPA_8 != "0" :
-                # ให้ countunit บวกเท่ากับ 1
-                countunit+=1
+                # ให้ COUNT_UNIT บวกเท่ากับ 1
+                COUNT_UNIT += 1
     
     # other
     else:
-        # ให้ countunit บวกเท่ากับ 1
-        countunit+=1
+        # ให้ COUNT_UNIT บวกเท่ากับ 1
+        COUNT_UNIT += 1
 
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    resGPAX = float(GPAX) / float(countunit)
-    # นำ resGPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน newGPAX
-    newGPAX = '%.2f' % resGPAX
+    # เก็บผลหารระหว่าง GPAX กับ COUNT_UNIT ไว้ใน RES_GPAX
+    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
+    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
+    NEW_GPAX = '%.2f' % RES_GPAX
     
-    # render eighthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
+    # render eightTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
-    return render(request, 'eightTerm.html', {'dataterm8':dataterm_8,
-                                              'GPARES':dataGPA,
-                                              'res_GPAX': newGPAX})
+    return render(request, 'eightTerm.html', {'dataterm8':eighth_dataterm,
+                                              'GPARES':DATA_GPA,
+                                              'res_GPAX': NEW_GPAX})
 
 # แสดงรูป flow
-def picFlow(request):
+def picture_of_flow(request):
     # render หน้า picFlow.html เพื่อแสดงรูป Flow
     return render(request, 'picFlow.html')
 
