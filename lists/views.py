@@ -1876,8 +1876,8 @@ def first_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -1958,8 +1958,8 @@ def second_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -2040,8 +2040,8 @@ def third_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -2122,8 +2122,8 @@ def fourth_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -2204,8 +2204,8 @@ def fifth_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -2286,8 +2286,8 @@ def sixth_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -2368,8 +2368,8 @@ def seventh_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
@@ -2450,8 +2450,8 @@ def eight_term(request):
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if GPAX > 0.0:
-        # loop สำหรับ unit ใน data_gpa
-        for unit in data_gpa:
+        # loop สำหรับ unit ใน DATA_GPA
+        for unit in DATA_GPA:
 
             # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
             if unit.GPA_1 != "0" :
