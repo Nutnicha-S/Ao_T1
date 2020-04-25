@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% block content %}
 
 <h2>Log in</h2>
-<form method="post">
+<error_message><form method="post">
     {% csrf_token %}
 
     <!--django's form-->
     {{ form.as_p }}
 
     <!--Log in button-->
-    <button type="submit" class="btn btn-primary">Log in</button>
-</form>
+    <button id="login" type="submit" class="btn btn-primary">Log in</button>
+</form></error_message>
 {% endblock %}

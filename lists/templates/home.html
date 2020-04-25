@@ -4,10 +4,10 @@
     <hr>
     <body>
         <!--ถ้ามีการ sign up or log in-->
-        <p>{% if user.is_authenticated %}
+        {% if user.is_authenticated %}
         <!--ให้แสดง ID username ของผู้ใช้-->
-        <h4>ID : {{ user.username }} {{ test }}</h4>
-            {% else %}visitor{% endif %}</p>
+        <h4 name="id_user">ID : {{ user.username }} {{ test }}</h4>
+            {% else %}visitor{% endif %}
         <hr>
         <br>
         <p><font size="5" color="B03A2E">{{message}}</font></p>
@@ -252,15 +252,15 @@
 </table>
         <br>
             <!--Submit button-->
-            <button type="button" class="btn btn-primary btn-lg" onclick="Submitcal()">Submit</button>
+            <button type="button" id="submit_button" class="btn btn-primary btn-lg" onclick="Submitcal()">Submit</button>
             <!--Save button-->
-            <input type="submit" class="btn btn-secondary btn-lg" value="Save">
+            <input type="submit" id="save_button" class="btn btn-secondary btn-lg" value="Save">
         </form>
 
         <!--กรณีที่ไม่ได้ลงหน่วยกิตและเกรดจะแสดง message ดังที่ได้กล่าวไว้ใน views.py-->
-        <p><font size="5" color="B03A2E">{{message}}</font></p>
+        <p><font size="5" id="forgot_to_select_term" color="B03A2E">{{message}}</font></p>
         <!--แต่ถ้าลงหน่วยกิตและเกรดเรียบร้อยแล้วก็จะแสดงเกรดในเทอมนั้นและสถานะนักศึกษา-->
-        <h1><font size="6" >Your GPA  : {{result}}{{notinput}} <p" id="demo""></p></font></h1>
+        <h1><font size="6" id="GPA_result" >Your GPA  : {{result}}{{notinput}} <p" id="demo""></p></font></h1>
         <h1><font size="6" >Student Status : <p" id="student_state""></font></p></h1>
 
         <script>

@@ -87,7 +87,7 @@ class GradeCalTest(TestCase):
 
         # สร้างข้อมูล วิชา หน่วยกิต และเกรด ของวิชานั้น รวม 8 ข้อมูล 
         example_data1 = Term1.objects.create(subject='example_subject1', 
-                                             unit='1', 
+                                             unit='1',
                                              Grade='A')
 
         example_data2 = Term2.objects.create(subject='example_subject2',

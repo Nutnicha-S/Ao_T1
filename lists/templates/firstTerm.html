@@ -1,6 +1,5 @@
 {% extends 'base.html' %} {% block content %}
 
-
 <hr>
 <h2 align="center">TERM 1</h2>
 <!--สร้างตาราง-->
@@ -8,10 +7,10 @@
   <thead class="thead-dark">
     <tr>
       <!--แบ่งเป็น 4 columns-->
-      <th scope="col">No.</th>
-      <th scope="col">Subject</th>
-      <th scope="col">Unit</th>
-      <th scope="col">Grade</th>
+      <th scope="col" id="num">No.</th>
+      <th scope="col" id="sub">Subject</th>
+      <th scope="col" id="unt">Unit</th>
+      <th scope="col" id="grd">Grade</th>
     </tr>
   </thead>
 
@@ -20,24 +19,24 @@
   <tbody>
     <tr>
       <!--ข้อมูลแรกใส่ ID ของแต่ละตัวลงไปซึ่งเป็นเลข 1-9-->
-      <th scope="row">{{itemlist.id}}</th>
+      <th scope="row" id="nmbr">{{itemlist.id}}</th>
       <!--ข้อมูลทีสองใส่วิชาลงไป-->
-      <td>{{itemlist.subject}}</td>
+      <td id="sbjct">{{itemlist.subject}}</td>
       <!--ข้อมูลทีสามใส่หน่วยกิตของแต่ละวิชาลงไป-->
-      <td>{{itemlist.unit}}</td>
+      <td id="un">{{itemlist.unit}}</td>
       <!--ข้อมูลทีสี่ใส่เกรดของแต่ละวิชาลงไป-->
-      <td>{{itemlist.Grade}}</td>
+      <td id="gr">{{itemlist.Grade}}</td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
 
-<h3>GPA :
+<h3 id="GPA_first_term">GPA :
 <!--GPA term 1-->
 {% for listGPA in GPARES %}
   {{listGPA.GPA_1}}
 {% endfor %}</h3>
 
 <!--GPAX-->
-<h3>Your GPAX : {{res_GPAX}}<h3>
+<h3 id="GPAX">Your GPAX : {{res_GPAX}}<h3>
 {% endblock %}

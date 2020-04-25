@@ -12,15 +12,6 @@ def home_page(request):
 
 # count user ที่มา register
 def count_user_register(request):
-    # เก็บ GPA ลง DATA_GPA
-    DATA_GPA = GPA.objects.all()
-
-    # ถ้าความยาวของ DATA_GPA เป็น 0
-    if len(DATA_GPA) == 0:
-        # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
-        GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
-                           GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0,)
-
     # นับ User ที่มา register
     count = User.objects.count()
 
@@ -141,7 +132,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 1 มีค่าเท่ากับ 0
             if len(Term1.objects.all()) == 0 :
@@ -250,8 +242,10 @@ def grade_calculator(request):
 
                 # เก็บ ชื่อวิชา หน่วยกิต เกรด ของแต่ละวิชาไว้ใน data
                 data = Term1.objects.all()
+
                 # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term1.GPA
-                term1.GPA = res
+                term_1.GPA = res
+
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
                 return render(request, 'home.html',{'result':res})
 
@@ -307,7 +301,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 2 มีค่าเท่ากับ 0
             if len(Term2.objects.all()) == 0 :
@@ -415,7 +410,8 @@ def grade_calculator(request):
                 GPA.objects.filter(pk=1).update(GPA_2=res)
 
                 # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term2.GPA
-                term2.GPA = res
+                term_2.GPA = res
+
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
                 return render(request, 'home.html',{'result':res})
 
@@ -471,7 +467,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 3 มีค่าเท่ากับ 0
             if len(Term3.objects.all()) == 0 :
@@ -580,6 +577,7 @@ def grade_calculator(request):
 
                 # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term3.GPA
                 term3.GPA = res
+
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
                 return render(request, 'home.html',{'result':res})
 
@@ -635,7 +633,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 4 มีค่าเท่ากับ 0
             if len(Term4.objects.all()) == 0 :
@@ -800,7 +799,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 5 มีค่าเท่ากับ 0
             if len(Term5.objects.all()) == 0 :
@@ -965,7 +965,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 6 มีค่าเท่ากับ 0
             if len(Term6.objects.all()) == 0 :
@@ -1129,7 +1130,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 7 มีค่าเท่ากับ 0
             if len(Term7.objects.all()) == 0 :
@@ -1292,7 +1294,8 @@ def grade_calculator(request):
             sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
                       + sub_6 + sub_7 + sub_8 + sub_9)
             # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            res = sum_sub / sum_unit
+            grade = sum_sub / sum_unit
+            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 8 มีค่าเท่ากับ 0
             if len(Term8.objects.all()) == 0 :
