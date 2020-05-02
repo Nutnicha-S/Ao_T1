@@ -767,88 +767,18 @@ def list_of_subjects(request) :
 
 # แสดงกราฟ
 def graph(request):
-    # ให้ค่า countunit เป็น 0
-    COUNT_UNIT = 0
-    # ให้ค่า GPAX เป็น 0
-    GPAX = 0
-    # เก็บ ชื่อวิชา หน่วยกิต และเกรด ของแต่ละเทอมไว้ใน dataterm_1 - dataterm_9 ตามลำดับ
-    first_dataterm = Term1.objects.all()
-    second_dataterm = Term2.objects.all()
-    third_dataterm = Term3.objects.all()
-    fourth_dataterm = Term4.objects.all()
-    fifth_dataterm = Term5.objects.all()
-    sixth_dataterm = Term6.objects.all()
-    seventh_dataterm = Term7.objects.all()
-    eighth_dataterm = Term8.objects.all()
-    # เก็บ GPA ทั้วหมดไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-
-    # ถ้าความยาวของ DATA_GPA เป็น 0
-    if len(DATA_GPA) == 0:
-        # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
-        GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0, 
-                           GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
+    NEW_GPAX = GradeGPAX.objects.all()
     
-    # loop สำหรับ i ใน DATA_GPA
-    for i in DATA_GPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 9 ไว้ใน GPAX
-        GPAX = float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4) +\
-               float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8)
-    
-    # ถ้า GPAX มีค่ามากกว่า 0.0
-    if GPAX > 0.0:
-        # loop สำหรับ unit ใน dataGPA
-        for unit in DATA_GPA:
-
-            # ถ้า GPA ในเทอม 1 ไม่เท่ากับ 0 
-            if unit.GPA_1 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-            
-            # ถ้า GPA ในเทอม 2 ไม่เท่ากับ 0 
-            if unit.GPA_2 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-
-            # ถ้า GPA ในเทอม 3 ไม่เท่ากับ 0 
-            if unit.GPA_3 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-            
-            # ถ้า GPA ในเทอม 4 ไม่เท่ากับ 0 
-            if unit.GPA_4 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-            
-            # ถ้า GPA ในเทอม 5 ไม่เท่ากับ 0 
-            if unit.GPA_5 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-            
-            # ถ้า GPA ในเทอม 6 ไม่เท่ากับ 0 
-            if unit.GPA_6 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-            
-            # ถ้า GPA ในเทอม 7 ไม่เท่ากับ 0 
-            if unit.GPA_7 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-            
-            # ถ้า GPA ในเทอม 8 ไม่เท่ากับ 0 
-            if unit.GPA_8 != "0" :
-                # ให้ COUNT_UNIT บวกเท่ากับ 1
-                COUNT_UNIT += 1
-    
-    # other
-    else:
-        # ให้ COUNT_UNIT บวกเท่ากับ 1
-        COUNT_UNIT += 1
-
-    # เก็บผลหารระหว่าง GPAX กับ countunit ไว้ใน resGPAX
-    RES_GPAX = float(GPAX) / float(COUNT_UNIT)
-    # นำ RES_GPAX มาทำให้เหลือทศนิยม 2 ตำแหน่ง เก็บไว้ใน NEW_GPAX
-    NEW_GPAX = '%.2f' % RES_GPAX
+    # เก็บ ชื่อวิชา หน่วยกิต และเกรด ของแต่ละเทอมไว้ใน dataterm ตามลำดับ
+    first_dataterm = Semister.objects.filter(term="1").all()
+    second_dataterm = Semister.objects.filter(term="2").all()
+    third_dataterm = Semister.objects.filter(term="3").all()
+    fourth_dataterm = Semister.objects.filter(term="4").all()
+    fifth_dataterm = Semister.objects.filter(term="5").all()
+    sixth_dataterm = Semister.objects.filter(term="6").all()
+    seventh_dataterm = Semister.objects.filter(term="7").all()
+    eighth_dataterm = Semister.objects.filter(term="8").all()
 
     # render Graph.html ให้แสดงข้อมูลตามเทอม โดยมีเส้นกราฟ GPA ระบุไว้ พร้อมแสดง GPAX
     return render(request, 'Graph.html', {'dataterm1': first_dataterm,
