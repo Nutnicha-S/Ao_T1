@@ -50,11 +50,11 @@ def signup(request):
         form = UserCreationForm()
     # render หน้า signup.html พร้อมใช้ form ที่จะสร้าง user
     return render(request, 'registration/signup.html', {'form': form})
-
+    
 # calculate the grade
 def grade_calculator(request):
-    # เก็บ Plese check your infromation before saving. ไว้ใน not_input
-    not_input = "Plese check your infromation before saving."
+    # เก็บ Plese check your information before saving. ไว้ใน not_input
+    not_input = "Plese check your information before saving."
 
     # เก็บ Please select term before saving grade ไว้ใน message
     message = 'Please select term before saving grade'
@@ -402,6 +402,7 @@ def grade_calculator(request):
             return render(request, 'home.html',{'message':message})
 
 def save_data(request):
+    
     # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
     Semister.objects.create(subject = request.POST['subject1name'],
                             unit = request.POST['subject1Unit'],
@@ -769,7 +770,6 @@ def list_of_subjects(request) :
 def graph(request):
     DATA_GPA = GPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
-    
     # เก็บ ชื่อวิชา หน่วยกิต และเกรด ของแต่ละเทอมไว้ใน dataterm ตามลำดับ
     first_dataterm = Semister.objects.filter(term="1").all()
     second_dataterm = Semister.objects.filter(term="2").all()
@@ -902,8 +902,8 @@ def eighth_term(request):
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'eightTerm.html', {'dataterm8':eighth_dataterm,
                                               'GPARES':DATA_GPA,
-                                              'res_GPAX': NEW_GPAX})
-
+                                              'res_GPAX': NEW_GPAX})                                                                                                                                                
+    
 # แสดงรูป flow
 def picture_of_flow(request):
     # render หน้า picFlow.html เพื่อแสดงรูป Flow

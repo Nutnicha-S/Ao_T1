@@ -7,8 +7,7 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <!--แบ่งเป็น 4 columns-->
-      <th scope="col">No.</th>
+      <!--แบ่งเป็น 3 columns-->
       <th scope="col">Subject</th>
       <th scope="col">Unit</th>
       <th scope="col">Grade</th>
@@ -19,14 +18,12 @@
     {% for itemlist in dataterm8 %}
   <tbody>
     <tr>
-      <!--ข้อมูลแรกใส่ ID ของแต่ละตัวลงไปซึ่งเป็นเลข 1-9-->
-      <th scope="row">{{itemlist.id}}</th>
-      <!--ข้อมูลทีสองใส่วิชาลงไป-->
+      <!--ใส่วิชาลงไป-->
       <td>{{itemlist.subject}}</td>
-      <!--ข้อมูลทีสามใส่หน่วยกิตของแต่ละวิชาลงไป-->
+      <!--ใส่หน่วยกิตของแต่ละวิชาลงไป-->
       <td>{{itemlist.unit}}</td>
-      <!--ข้อมูลทีสี่ใส่เกรดของแต่ละวิชาลงไป-->
-      <td>{{itemlist.Grade}}</td>
+      <!--ใส่เกรดของแต่ละวิชาลงไป-->
+      <td>{{itemlist.grade}}</td>
     </tr>
   {% endfor %}
   </tbody>
@@ -39,5 +36,9 @@
 {% endfor %}</h3>
 
 <!--GPAX-->
-<h3>Your GPAX : {{res_GPAX}}<h3>
+<h3>Your GPAX : 
+  {% for listGPAX in res_GPAX %}
+    {{listGPAX.GPAX}}
+  {% endfor %}</h3>
+
 {% endblock %}
