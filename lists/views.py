@@ -115,934 +115,237 @@ def grade_calculator(request):
         grade_result = '%.2f' % result
 
     # ถ้าวิชาในทุกเทอมน้อยกว่าหรือเท่ากับ 80
-    if len(Term1.objects.all()) <= 80:
+    if len(Semister.objects.all()) <= 80:
 
         # ------------------------------------------------------ Term 1 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 1 (ถ้าเลือกเทอม 1)
         if request.POST.get('subjectTerm') == "1":
-        
-            # ถ้าความยาวของวิชาในเทอม 1 มีค่าเท่ากับ 0
-            if len(Term1.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term1.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
 
-                Term1.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term1.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 1 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="1")) == 0 :
                 # update GPA term 1 
-                GPA.objects.filter(pk=1).update(GPA_1=res)
-
+                GPA.objects.update(GPA_1=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term1.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term1.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-
-                # update GPA term 1 
-                GPA.objects.filter(pk=1).update(GPA_1=res)
-
-                # เก็บ ชื่อวิชา หน่วยกิต เกรด ของแต่ละวิชาไว้ใน data
-                data = Term1.objects.all()
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term1.GPA
-                term_1.GPA = res
-
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="1").all().delete()
+                # update GPA term 1
+                GPA.objects.update(GPA_1=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
-        # ------------------------------------------------------ Term 2 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 2 (ถ้าเลือกเทอม 2)
-        if request.POST.get('subjectTerm') == "2":
+        elif request.POST.get('subjectTerm') == "2":
 
-            # ถ้าความยาวของวิชาในเทอม 2 มีค่าเท่ากับ 0
-            if len(Term2.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term2.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term2.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 2 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="2")) == 0 :
                 # update GPA term 2
-                GPA.objects.filter(pk=1).update(GPA_2=res)
-
+                GPA.objects.update(GPA_2=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term2.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term2.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="2").all().delete()
                 # update GPA term 2
-                GPA.objects.filter(pk=1).update(GPA_2=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term2.GPA
-                term_2.GPA = res
-
+                GPA.objects.update(GPA_2=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
+            
+        elif request.POST.get('subjectTerm') == "3":
 
-        # ------------------------------------------------------ Term 3 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 3 (ถ้าเลือกเทอม 3)
-        if request.POST.get('subjectTerm') == "3":
-
-            # ถ้าความยาวของวิชาในเทอม 3 มีค่าเท่ากับ 0
-            if len(Term3.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term3.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term3.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 3 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="3")) == 0 :
                 # update GPA term 3
-                GPA.objects.filter(pk=1).update(GPA_3=res)
-
+                GPA.objects.update(GPA_3=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term3.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term3.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="3").all().delete()
                 # update GPA term 3
-                GPA.objects.filter(pk=1).update(GPA_3=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term3.GPA
-                term3.GPA = res
-
+                GPA.objects.update(GPA_3=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
-        # ------------------------------------------------------ Term 4 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 4 (ถ้าเลือกเทอม 4)
-        if request.POST.get('subjectTerm') == "4":
+        elif request.POST.get('subjectTerm') == "4":
 
-            # ถ้าความยาวของวิชาในเทอม 4 มีค่าเท่ากับ 0
-            if len(Term4.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term4.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term4.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 4 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="4")) == 0 :
                 # update GPA term 4
-                GPA.objects.filter(pk=1).update(GPA_4=res)
-
+                GPA.objects.update(GPA_4=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term4.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term4.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="4").all().delete()
                 # update GPA term 4
-                GPA.objects.filter(pk=1).update(GPA_4=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term4.GPA
-                term4.GPA = res
-
+                GPA.objects.update(GPA_4=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
-        # ------------------------------------------------------ Term 5 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 5 (ถ้าเลือกเทอม 5)                
-        if request.POST.get('subjectTerm') == "5":
+        elif request.POST.get('subjectTerm') == "5":
 
-            # ถ้าความยาวของวิชาในเทอม 5 มีค่าเท่ากับ 0
-            if len(Term5.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term5.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term5.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 5 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="5")) == 0 :
                 # update GPA term 5
-                GPA.objects.filter(pk=1).update(GPA_5=res)
-
+                GPA.objects.update(GPA_5=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term5.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term5.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-                
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="5").all().delete()
                 # update GPA term 5
-                GPA.objects.filter(pk=1).update(GPA_5=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term5.GPA
-                term5.GPA = res
-
+                GPA.objects.update(GPA_5=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
-        # ------------------------------------------------------ Term 6 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 6 (ถ้าเลือกเทอม 6)   
-        if request.POST.get('subjectTerm') == "6":
+        elif request.POST.get('subjectTerm') == "6":
 
-            # ถ้าความยาวของวิชาในเทอม 6 มีค่าเท่ากับ 0
-            if len(Term6.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term6.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term6.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 6 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="6")) == 0 :
                 # update GPA term 6
-                GPA.objects.filter(pk=1).update(GPA_6=res)
-
+                GPA.objects.update(GPA_6=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term6.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term6.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-                
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="6").all().delete()
                 # update GPA term 6
-                GPA.objects.filter(pk=1).update(GPA_6=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term6.GPA
-                term6.GPA = res
-
+                GPA.objects.update(GPA_6=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
-        # ------------------------------------------------------ Term 7 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 7 (ถ้าเลือกเทอม 7)   
-        if request.POST.get('subjectTerm') == "7":
+        elif request.POST.get('subjectTerm') == "7":
 
-            # ถ้าความยาวของวิชาในเทอม 7 มีค่าเท่ากับ 0
-            if len(Term7.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term7.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term7.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 7 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="7")) == 0 :
                 # update GPA term 7
-                GPA.objects.filter(pk=1).update(GPA_7=res)
-
+                GPA.objects.update(GPA_7=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term7.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term7.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="7").all().delete()
                 # update GPA term 7
-                GPA.objects.filter(pk=1).update(GPA_7=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term7.GPA
-                term7.GPA = res
-
+                GPA.objects.update(GPA_7=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
-        # ------------------------------------------------------ Term 8 -------------------------------------------------------------
-        # ถ้า value ของ subjectTerm มีค่าเท่ากับ 8 (ถ้าเลือกเทอม 8)   
-        if request.POST.get('subjectTerm') == "8":
+        elif request.POST.get('subjectTerm') == "8":
 
-            # ถ้าความยาวของวิชาในเทอม 8 มีค่าเท่ากับ 0
-            if len(Term8.objects.all()) == 0 :
-                # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term8.objects.create(subject =request.POST['subject1name'],
-                                     unit=request.POST['subject1Unit'],
-                                     Grade=request.POST['subject1Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject=request.POST['subject2name'],
-                                     unit=request.POST['subject2Unit'],
-                                     Grade=request.POST['subject2Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject =request.POST['subject3name'],
-                                     unit=request.POST['subject3Unit'],
-                                     Grade=request.POST['subject3Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject =request.POST['subject4name'],
-                                     unit=request.POST['subject4Unit'],
-                                     Grade=request.POST['subject4Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject =request.POST['subject5name'],
-                                     unit=request.POST['subject5Unit'],
-                                     Grade=request.POST['subject5Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject=request.POST['subject6name'],
-                                     unit=request.POST['subject6Unit'],
-                                     Grade=request.POST['subject6Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject =request.POST['subject7name'],
-                                     unit=request.POST['subject7Unit'],
-                                     Grade=request.POST['subject7Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject=request.POST['subject8name'],
-                                     unit=request.POST['subject8Unit'],
-                                     Grade=request.POST['subject8Grade'],
-                                     GPA=res)
-
-                Term8.objects.create(subject=request.POST['subject9name'],
-                                     unit=request.POST['subject9Unit'],
-                                     Grade=request.POST['subject9Grade'],
-                                     GPA=res)
-
+            # ถ้าในเทอม 8 ยังไม่มีข้อมูล
+            if len(Semister.objects.filter(term="8")) == 0 :
                 # update GPA term 8
-                GPA.objects.filter(pk=1).update(GPA_8=res)
-
+                GPA.objects.update(GPA_8=grade_result)
+                # save data 
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
             # other
             else:
-                # update ช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-                Term8.objects.filter(pk=1).update(subject =request.POST['subject1name'],
-                                                  unit=request.POST['subject1Unit'], 
-                                                  Grade=request.POST['subject1Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=2).update(subject =request.POST['subject2name'],
-                                                  unit=request.POST['subject2Unit'],
-                                                  Grade=request.POST['subject2Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=3).update(subject =request.POST['subject3name'], 
-                                                  unit=request.POST['subject3Unit'],
-                                                  Grade=request.POST['subject3Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=4).update(subject =request.POST['subject4name'], 
-                                                  unit=request.POST['subject4Unit'],
-                                                  Grade=request.POST['subject4Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=5).update(subject =request.POST['subject5name'],
-                                                  unit=request.POST['subject5Unit'],
-                                                  Grade=request.POST['subject5Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=6).update(subject =request.POST['subject6name'],
-                                                  unit=request.POST['subject6Unit'],
-                                                  Grade=request.POST['subject6Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=7).update(subject =request.POST['subject7name'],
-                                                  unit=request.POST['subject7Unit'],
-                                                  Grade=request.POST['subject7Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=8).update(subject =request.POST['subject8name'],
-                                                  unit=request.POST['subject8Unit'],
-                                                  Grade=request.POST['subject8Grade'],
-                                                  GPA=res)
-
-                Term8.objects.filter(pk=9).update(subject =request.POST['subject9name'],
-                                                  unit=request.POST['subject9Unit'],
-                                                  Grade=request.POST['subject9Grade'],
-                                                  GPA=res)
-
+                # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
+                Semister.objects.filter(term="8").all().delete()
                 # update GPA term 8
-                GPA.objects.filter(pk=1).update(GPA_8=res)
-
-                # ให้ res หรือ GPA ที่คำนวณไว้ก่อนหน้านี้ เก็บไว้ใน term8.GPA
-                term8.GPA = res
-
+                GPA.objects.update(GPA_8=grade_result)
+                # save data
+                save_data(request)
                 # render home.html พร้อมบอก GPA ในเทอมนั้น ๆ
-                return render(request, 'home.html',{'result':res})
+                return render(request, 'home.html',{'result':grade_result})
 
         # other 
         else:
             # render home.html พร้อมบอก message ตามข้างต้นที่ได้กำหนดไว้
             return render(request, 'home.html',{'message':message})
+
+def save_data(request):
+    # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
+    Semister.objects.create(subject = request.POST['subject1name'],
+                            unit = request.POST['subject1Unit'],
+                            grade = request.POST['subject1Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject = request.POST['subject2name'],
+                            unit = request.POST['subject2Unit'],
+                            grade = request.POST['subject2Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject = request.POST['subject3name'],
+                            unit = request.POST['subject3Unit'],
+                            grade = request.POST['subject3Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject =request.POST['subject4name'],
+                            unit=request.POST['subject4Unit'],
+                            grade=request.POST['subject4Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject =request.POST['subject5name'],
+                            unit=request.POST['subject5Unit'],
+                            grade=request.POST['subject5Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject=request.POST['subject6name'],
+                            unit=request.POST['subject6Unit'],
+                            grade=request.POST['subject6Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject =request.POST['subject7name'],
+                            unit=request.POST['subject7Unit'],
+                            grade=request.POST['subject7Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject=request.POST['subject8name'],
+                            unit=request.POST['subject8Unit'],
+                            grade=request.POST['subject8Grade'],
+                            term = request.POST['subjectTerm'])
+
+    Semister.objects.create(subject=request.POST['subject9name'],
+                            unit=request.POST['subject9Unit'],
+                            grade=request.POST['subject9Grade'],
+                            term = request.POST['subjectTerm'])
 
 # Search หาวิชาที่ต้องการดูตัวต่อของวิชานั้น ๆ
 def search_subjects_in_the_flow(request):
