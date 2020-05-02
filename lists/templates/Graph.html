@@ -60,7 +60,10 @@
         <body>
     <div id="linechart_material" style="width: 1300px; height: 500px"></div>
       <!--GPAX-->  
-      <h3>Your GPAX : {{res_GPAX}}<h3>
+      <h3>Your GPAX : 
+        {% for listGPAX in res_GPAX %}
+          {{listGPAX.GPAX}}
+        {% endfor %}</h3>
   </body>
 
 {% endblock %}
