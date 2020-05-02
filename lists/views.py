@@ -53,88 +53,74 @@ def signup(request):
 
 # calculate the grade
 def grade_calculator(request):
-    term_1 = Term1()
-    term_2 = Term2()
     # เก็บ Plese check your infromation before saving. ไว้ใน not_input
     not_input = "Plese check your infromation before saving."
-    # บวกหน่วยกิตกับเกรดของทุกวิชาเก็บไว้ที่ check_input
-    check_input = ( float(request.POST.get('subject1Unit'))
-                 + float(request.POST.get('subject1Grade'))
-                 + float(request.POST.get('subject2Unit'))
-                 + float(request.POST.get('subject2Grade'))
-                 + float(request.POST.get('subject3Unit'))
-                 + float(request.POST.get('subject3Grade'))
-                 + float(request.POST.get('subject4Unit'))
-                 + float(request.POST.get('subject4Grade'))
-                 + float(request.POST.get('subject5Unit'))
-                 + float(request.POST.get('subject5Grade'))
-                 + float(request.POST.get('subject6Unit'))
-                 + float(request.POST.get('subject6Grade'))
-                 + float(request.POST.get('subject7Unit'))
-                 + float(request.POST.get('subject7Grade'))
-                 + float(request.POST.get('subject8Unit'))
-                 + float(request.POST.get('subject8Grade'))
-                 + float(request.POST.get('subject9Unit'))
-                 + float(request.POST.get('subject9Grade')) )
 
-    # ถ้าความยาวของวิชาในเทอม 1 น้อยกว่าหรือเท่ากับ 9
-    if len(Term1.objects.all()) <= 9:
+    # เก็บ Please select term before saving grade ไว้ใน message
+    message = 'Please select term before saving grade'
+
+    # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
+    sub_1 = ( float(request.POST.get('subject1Unit'))
+            * float(request.POST.get('subject1Grade')) )
+
+    sub_2 = ( float(request.POST.get('subject2Unit'))
+            * float(request.POST.get('subject2Grade')) )
+
+    sub_3 = ( float(request.POST.get('subject3Unit'))
+            * float(request.POST.get('subject3Grade')) )
+
+    sub_4 = ( float(request.POST.get('subject4Unit'))
+            * float(request.POST.get('subject4Grade')) )
+
+    sub_5 = ( float(request.POST.get('subject5Unit'))
+            * float(request.POST.get('subject5Grade')) )
+
+    sub_6 = ( float(request.POST.get('subject6Unit'))
+            * float(request.POST.get('subject6Grade')) )
+
+    sub_7 = ( float(request.POST.get('subject7Unit'))
+            * float(request.POST.get('subject7Grade')) )
+
+    sub_8 = ( float(request.POST.get('subject8Unit'))
+            * float(request.POST.get('subject8Grade')) )
+
+    sub_9 = ( float(request.POST.get('subject9Unit'))
+            * float(request.POST.get('subject9Grade')) )
+
+    # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
+    sum_unit = ( float(request.POST.get('subject1Unit'))
+               + float(request.POST.get('subject2Unit'))
+               + float(request.POST.get('subject3Unit'))
+               + float(request.POST.get('subject4Unit'))
+               + float(request.POST.get('subject5Unit'))
+               + float(request.POST.get('subject6Unit'))
+               + float(request.POST.get('subject7Unit'))
+               + float(request.POST.get('subject8Unit'))
+               + float(request.POST.get('subject9Unit')) )
+            
+    # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
+    sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
+               + sub_6 + sub_7 + sub_8 + sub_9)
+
+    # check ตัวส่วนว่าเป็น 0 หรือไม่
+    if sum_unit == 0 :
+        # ถ้าเป็น 0 ให้ แสดง not_input
+        return render(request, 'home.html', {'notinput': not_input})
+    # ถ้าไม่เป็น 0 
+    else :
+        # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน result
+        result = sum_sub / sum_unit
+        # นำ result มาทำให้เหลือทศนิยม 2 ตำแหน่ง 
+        # ได้เกรดของเทอมนั้น ๆ
+        grade_result = '%.2f' % result
+
+    # ถ้าวิชาในทุกเทอมน้อยกว่าหรือเท่ากับ 80
+    if len(Term1.objects.all()) <= 80:
 
         # ------------------------------------------------------ Term 1 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 1 (ถ้าเลือกเทอม 1)
         if request.POST.get('subjectTerm') == "1":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
-
+        
             # ถ้าความยาวของวิชาในเทอม 1 มีค่าเท่ากับ 0
             if len(Term1.objects.all()) == 0 :
                 # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
@@ -252,57 +238,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 2 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 2 (ถ้าเลือกเทอม 2)
         if request.POST.get('subjectTerm') == "2":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 2 มีค่าเท่ากับ 0
             if len(Term2.objects.all()) == 0 :
@@ -418,57 +353,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 3 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 3 (ถ้าเลือกเทอม 3)
         if request.POST.get('subjectTerm') == "3":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 3 มีค่าเท่ากับ 0
             if len(Term3.objects.all()) == 0 :
@@ -584,57 +468,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 4 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 4 (ถ้าเลือกเทอม 4)
         if request.POST.get('subjectTerm') == "4":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 4 มีค่าเท่ากับ 0
             if len(Term4.objects.all()) == 0 :
@@ -750,57 +583,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 5 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 5 (ถ้าเลือกเทอม 5)                
         if request.POST.get('subjectTerm') == "5":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 5 มีค่าเท่ากับ 0
             if len(Term5.objects.all()) == 0 :
@@ -916,57 +698,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 6 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 6 (ถ้าเลือกเทอม 6)   
         if request.POST.get('subjectTerm') == "6":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 6 มีค่าเท่ากับ 0
             if len(Term6.objects.all()) == 0 :
@@ -1082,56 +813,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 7 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 7 (ถ้าเลือกเทอม 7)   
         if request.POST.get('subjectTerm') == "7":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 7 มีค่าเท่ากับ 0
             if len(Term7.objects.all()) == 0 :
@@ -1246,56 +927,6 @@ def grade_calculator(request):
         # ------------------------------------------------------ Term 8 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 8 (ถ้าเลือกเทอม 8)   
         if request.POST.get('subjectTerm') == "8":
-            # ถ้า check_input รวมแล้วมีค่าเท่ากับ 0.0
-            if check_input == 0.0:
-                # ให้ render หน้า home.html พร้อมบอกตามตัวแปร not_input ที่ได้กำหนดไว้ข้างต้น
-                return render(request, 'home.html', {'notinput': not_input})
-
-            # ให้แต่ละวิชาคูณจำนวนหน่วยกิตและเกรดที่ได้เก็บไว้ใน sub_1-9 ตามลำดับ
-            sub_1 = ( float(request.POST.get('subject1Unit'))
-                   * float(request.POST.get('subject1Grade')) )
-
-            sub_2 = ( float(request.POST.get('subject2Unit'))
-                   * float(request.POST.get('subject2Grade')) )
-
-            sub_3 = ( float(request.POST.get('subject3Unit'))
-                   * float(request.POST.get('subject3Grade')) )
-
-            sub_4 = ( float(request.POST.get('subject4Unit'))
-                   * float(request.POST.get('subject4Grade')) )
-
-            sub_5 = ( float(request.POST.get('subject5Unit'))
-                   * float(request.POST.get('subject5Grade')) )
-
-            sub_6 = ( float(request.POST.get('subject6Unit'))
-                   * float(request.POST.get('subject6Grade')) )
-
-            sub_7 = ( float(request.POST.get('subject7Unit'))
-                   * float(request.POST.get('subject7Grade')) )
-
-            sub_8 = ( float(request.POST.get('subject8Unit'))
-                   * float(request.POST.get('subject8Grade')) )
-
-            sub_9 = ( float(request.POST.get('subject9Unit'))
-                   * float(request.POST.get('subject9Grade')) )
-
-            # เก็บผลบวกของหน่วยกิตทุกวิชาไว้ใน sum_unit
-            sum_unit = ( float(request.POST.get('subject1Unit'))
-                      + float(request.POST.get('subject2Unit'))
-                      + float(request.POST.get('subject3Unit'))
-                      + float(request.POST.get('subject4Unit'))
-                      + float(request.POST.get('subject5Unit'))
-                      + float(request.POST.get('subject6Unit'))
-                      + float(request.POST.get('subject7Unit'))
-                      + float(request.POST.get('subject8Unit'))
-                      + float(request.POST.get('subject9Unit')) )
-            
-            # นำ sub_1 บวกไปจนถึง sub_9 เก็บไว้ที่ sum_sub
-            sum_sub = (sub_1 + sub_2 + sub_3 + sub_4 + sub_5 
-                      + sub_6 + sub_7 + sub_8 + sub_9)
-            # นำ sum_sub หารด้วย sum_unit เก็บไว้ใน res ซึ่งเป็นเกรดในเทอมนี้
-            grade = sum_sub / sum_unit
-            res = '%.2f' % grade
 
             # ถ้าความยาวของวิชาในเทอม 8 มีค่าเท่ากับ 0
             if len(Term8.objects.all()) == 0 :
@@ -1410,8 +1041,6 @@ def grade_calculator(request):
 
         # other 
         else:
-            # เก็บ Please select term before saving grade ไว้ใน message
-            message = 'Please select term before saving grade'
             # render home.html พร้อมบอก message ตามข้างต้นที่ได้กำหนดไว้
             return render(request, 'home.html',{'message':message})
 
