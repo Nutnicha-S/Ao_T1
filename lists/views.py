@@ -862,25 +862,27 @@ def graph(request):
                                           'GPARES': DATA_GPA, 
                                           'res_GPAX': NEW_GPAX})
 
-# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 1 และ GPAX 
+# แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในแต่ละเทอม พร้อม GPAX 
 def first_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    first_dataterm = Term1.objects.all()
-    
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    first_dataterm = Semister.objects.filter(term="1").all()
+
     # render firstTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'firstTerm.html', {'dataterm1':first_dataterm,
                                               'GPARES':DATA_GPA,
                                               'res_GPAX': NEW_GPAX})
-    
+
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 2 และ GPAX 
 def second_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    second_dataterm = Term2.objects.all()
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    second_dataterm = Semister.objects.filter(term="2").all()
     
     # render secondTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -890,10 +892,11 @@ def second_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 3 และ GPAX 
 def third_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    third_dataterm = Term3.objects.all()
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    third_dataterm = Semister.objects.filter(term="3").all()
 
     # render thirdTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -903,11 +906,12 @@ def third_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 4 และ GPAX 
 def fourth_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    fourth_dataterm = Term4.objects.all()
-    
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    fourth_dataterm = Semister.objects.filter(term="4").all()
+
     # render fourthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'fourthTerm.html', {'dataterm4':fourth_dataterm,
@@ -916,11 +920,12 @@ def fourth_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 5 และ GPAX 
 def fifth_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    fifth_dataterm = Term5.objects.all()
-    
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    fifth_dataterm = Semister.objects.filter(term="5").all()
+
     # render fifthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'fifthTerm.html', {'dataterm5':fifth_dataterm,
@@ -929,10 +934,11 @@ def fifth_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 6 และ GPAX 
 def sixth_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    sixth_dataterm = Term6.objects.all()
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    sixth_dataterm = Semister.objects.filter(term="6").all()
     
     # render sixthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -942,10 +948,11 @@ def sixth_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 7 และ GPAX 
 def seventh_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    seventh_dataterm = Term7.objects.all()
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    seventh_dataterm = Semister.objects.filter(term="7").all()
 
     # render seventhTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -954,12 +961,13 @@ def seventh_term(request):
                                               'res_GPAX': NEW_GPAX})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 8 และ GPAX 
-def eight_term(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
+def eighth_term(request):
     DATA_GPA = GPA.objects.all()
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm_1
-    eighth_dataterm = Term8.objects.all()
-    
+    NEW_GPAX = GradeGPAX.objects.all()
+
+    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
+    eighth_dataterm = Semister.objects.filter(term="8").all()
+
     # render eightTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
     return render(request, 'eightTerm.html', {'dataterm8':eighth_dataterm,
