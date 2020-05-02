@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Term1,Term2,Term3,Term4,Term5,Term6,Term7,Term8,GPA
+from .models import Semister,GPA,GradeGPAX
 from lists.models import Userinfo
 
 # แสดงหน้าหลักของ GradeGuide
@@ -1415,13 +1415,6 @@ def grade_calculator(request):
             # render home.html พร้อมบอก message ตามข้างต้นที่ได้กำหนดไว้
             return render(request, 'home.html',{'message':message})
 
-# เลือกเทอม
-def termselect(request):
-    # เก็บเทอมที่เลือกไว้ที่ termsel
-    termsel=str(request.POST.get('selectterm'))
-    # render หน้า home.html พร้อมบอกเทอมที่เลือก
-    return render(request, 'home.html', {'term1': termsel})
-
 # Search หาวิชาที่ต้องการดูตัวต่อของวิชานั้น ๆ
 def search_subjects_in_the_flow(request):
     # เก็บ result เป็นช่องว่าง
@@ -1835,26 +1828,6 @@ def graph(request):
                                           'dataterm8': eighth_dataterm,
                                           'GPARES': DATA_GPA, 
                                           'res_GPAX': NEW_GPAX})
-
-# เลือกเทอมเพื่อแสดงผลลัพธ์
-def result(request):
-    # เก็บ GPA ไว้ใน DATA_GPA
-    DATA_GPA = GPA.objects.all()
-
-    # ถ้าความยาวของ dataGPA เป็น 0
-    if len(DATA_GPA) == 0:
-        # ให้สร้าง GPA ตั้งแต่เทอมแรกจนถึงเทอมสุดท้าย โดยค่าแรกของแต่ละเทอมเป็น 0
-        GPA.objects.create(GPA_1=0, GPA_2=0, GPA_3=0, GPA_4=0,
-                           GPA_5=0, GPA_6=0, GPA_7=0, GPA_8=0, )
-
-    # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm ของแต่ละเทอม
-    first_dataterm = Term1.objects.all()
-    second_dataterm = Term2.objects.all()
-
-    # render Result.html พร้อมแสดง GPA ของแต่ละเทอม พร้อม GPAX
-    return render(request, 'Result.html',{'dataterm1':first_dataterm,
-                                          'dataterm2':second_dataterm,
-                                          'GPARES':DATA_GPA})
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 1 และ GPAX 
 def first_term(request):
