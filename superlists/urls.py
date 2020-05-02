@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'fifthTerm', views.fifth_term, name='fifthTerm'),
     url(r'sixthTerm', views.sixth_term, name='sixthTerm'),
     url(r'seventhTerm', views.seventh_term, name='seventhTerm'),
-    url(r'eightTerm', views.eight_term, name='eightTerm'),
+    url(r'eighthTerm', views.eighth_term, name='eightTerm'),
     url(r'about', views.about, name='about'),
     #url(r'home', views.home_page, name='calGrade'),
     #admin page
