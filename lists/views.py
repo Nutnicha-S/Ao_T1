@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Semister,GPA,GradeGPAX
+from .models import Semester,GradeGPA,GradeGPAX
 from lists.models import Userinfo
 
 # แสดงหน้าหลักของ GradeGuide
@@ -115,15 +115,29 @@ def grade_calculator(request):
         grade_result = '%.2f' % result
 
     # เก็บ GPA ไว้ใน DATA_GPA
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
+    FIRST_GPA = GradeGPA.objects.filter(gpa_term="1")
+    SECOND_GPA = GradeGPA.objects.filter(gpa_term="2")
+    THIRD_GPA = GradeGPA.objects.filter(gpa_term="3")
+    FOURTH_GPA = GradeGPA.objects.filter(gpa_term="4")
+    FIFTH_GPA = GradeGPA.objects.filter(gpa_term="5")
+    SIXTH_GPA = GradeGPA.objects.filter(gpa_term="6")
+    SEVENTH_GPA = GradeGPA.objects.filter(gpa_term="7")
+    EIGHTH_GPA = GradeGPA.objects.filter(gpa_term="8")
+
     # ให้ค่า COUNT_UNIT เป็น 0
     COUNT_UNIT = 0
 
-    # loop สำหรับ i ใน dataGPA
-    for i in DATA_GPA:
-        # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
-        sum_grade = ( float(i.GPA_1) + float(i.GPA_2) + float(i.GPA_3) + float(i.GPA_4)
-                    + float(i.GPA_5) + float(i.GPA_6) + float(i.GPA_7) + float(i.GPA_8) )
+    # เก็บผลรวมของ GPA term 1 - GPA term 8 ไว้ใน GPAX
+    for i in DATA_GPA :
+        sum_grade = (float(i.FIRST_GPA)
+                    + float(i.SECOND_GPA)
+                    + float(i.THIRD_GPA)
+                    + float(i.FOURTH_GPA)
+                    + float(i.FIFTH_GPA)
+                    + float(i.SIXTH_GPA)
+                    + float(i.SEVENTH_GPA)
+                    + float(i.EIGHTH_GPA))
     
     # ถ้า GPAX มีค่ามากกว่า 0.0
     if sum_grade > 0.0:
@@ -131,42 +145,42 @@ def grade_calculator(request):
         for unit in DATA_GPA:
 
             # ถ้ามี GPA ในเทอม 1  
-            if unit.GPA_1 != "0" :
+            if unit.FIRST_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
             
             # ถ้ามี GPA ในเทอม 2 
-            if unit.GPA_2 != "0" :
+            if unit.SECOND_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
 
             # ถ้ามี GPA ในเทอม 3
-            if unit.GPA_3 != "0" :
+            if unit.THIRD_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
             
             # ถ้ามี GPA ในเทอม 4
-            if unit.GPA_4 != "0" :
+            if unit.FOURTH_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
             
             # ถ้ามี GPA ในเทอม 5
-            if unit.GPA_5 != "0" :
+            if unit.FIFTH_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
             
             # ถ้ามี GPA ในเทอม 6
-            if unit.GPA_6 != "0" :
+            if unit.SIXTH_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
             
             # ถ้ามี GPA ในเทอม 7
-            if unit.GPA_7 != "0" :
+            if unit.SEVENTH_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
             
             # ถ้ามี GPA ในเทอม 8
-            if unit.GPA_8 != "0" :
+            if unit.EIGHTH_GPA != "0" :
                 # ให้ COUNT_UNIT บวกเท่ากับ 1
                 COUNT_UNIT += 1
 
@@ -176,16 +190,16 @@ def grade_calculator(request):
     NEW_GPAX = '%.2f' % RES_GPAX
 
     # ถ้าวิชาในทุกเทอมน้อยกว่าหรือเท่ากับ 80
-    if len(Semister.objects.all()) <= 80:
+    if len(Semester.objects.all()) <= 80:
 
         # ------------------------------------------------------ Term 1 -------------------------------------------------------------
         # ถ้า value ของ subjectTerm มีค่าเท่ากับ 1 (ถ้าเลือกเทอม 1)
         if request.POST.get('subjectTerm') == "1":
 
             # ถ้าในเทอม 1 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="1")) == 0 :
-                # update GPA term 1 
-                GPA.objects.update(GPA_1=grade_result)
+            if len(Semester.objects.filter(term="1")) == 0 :
+                # update GPA term 1
+                GradeGPA.objects.filter(gpa_term="1").update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -196,10 +210,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="1").all().delete()
+                Semester.objects.filter(term="1").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 1
-                GPA.objects.update(GPA_1=grade_result)
+                GradeGPA.objects.filter(gpa_term="1").update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -210,9 +224,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "2":
 
             # ถ้าในเทอม 2 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="2")) == 0 :
+            if len(Semester.objects.filter(term="2")) == 0 :
                 # update GPA term 2
-                GPA.objects.update(GPA_2=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -223,10 +237,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="2").all().delete()
+                Semester.objects.filter(term="2").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 2
-                GPA.objects.update(GPA_2=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -237,9 +251,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "3":
 
             # ถ้าในเทอม 3 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="3")) == 0 :
+            if len(Semester.objects.filter(term="3")) == 0 :
                 # update GPA term 3
-                GPA.objects.update(GPA_3=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -250,10 +264,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="3").all().delete()
+                Semester.objects.filter(term="3").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 3
-                GPA.objects.update(GPA_3=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -264,9 +278,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "4":
 
             # ถ้าในเทอม 4 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="4")) == 0 :
+            if len(Semester.objects.filter(term="4")) == 0 :
                 # update GPA term 4
-                GPA.objects.update(GPA_4=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -277,10 +291,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="4").all().delete()
+                Semester.objects.filter(term="4").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 4
-                GPA.objects.update(GPA_4=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -291,9 +305,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "5":
 
             # ถ้าในเทอม 5 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="5")) == 0 :
+            if len(Semester.objects.filter(term="5")) == 0 :
                 # update GPA term 5
-                GPA.objects.update(GPA_5=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -304,10 +318,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="5").all().delete()
+                Semester.objects.filter(term="5").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 5
-                GPA.objects.update(GPA_5=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -318,9 +332,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "6":
 
             # ถ้าในเทอม 6 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="6")) == 0 :
+            if len(Semester.objects.filter(term="6")) == 0 :
                 # update GPA term 6
-                GPA.objects.update(GPA_6=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -331,10 +345,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="6").all().delete()
+                Semester.objects.filter(term="6").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 6
-                GPA.objects.update(GPA_6=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -345,9 +359,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "7":
 
             # ถ้าในเทอม 7 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="7")) == 0 :
+            if len(Semester.objects.filter(term="7")) == 0 :
                 # update GPA term 7
-                GPA.objects.update(GPA_7=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -358,10 +372,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="7").all().delete()
+                Semester.objects.filter(term="7").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 7
-                GPA.objects.update(GPA_7=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -372,9 +386,9 @@ def grade_calculator(request):
         elif request.POST.get('subjectTerm') == "8":
 
             # ถ้าในเทอม 8 ยังไม่มีข้อมูล
-            if len(Semister.objects.filter(term="8")) == 0 :
+            if len(Semester.objects.filter(term="8")) == 0 :
                 # update GPA term 8
-                GPA.objects.update(GPA_8=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data 
                 save_data(request)
@@ -385,10 +399,10 @@ def grade_calculator(request):
             # other
             else:
                 # ลบข้อมูลทั้งหมดออกเพื่อทำการแก้ไข
-                Semister.objects.filter(term="8").all().delete()
+                Semester.objects.filter(term="8").all().delete()
                 GradeGPAX.objects.all().delete()
                 # update GPA term 8
-                GPA.objects.update(GPA_8=grade_result)
+                GradeGPA.objects.update(GPA=grade_result)
                 GradeGPAX.objects.update(GPAX=NEW_GPAX)
                 # save data
                 save_data(request)
@@ -404,47 +418,47 @@ def grade_calculator(request):
 def save_data(request):
     
     # ให้สร้างช่องใส่ ชื่อวิชา หน่วยกิต เกรด และเก็บเกรดแต่ละวิชาไว้ รวมแล้ว 9 วิชา
-    Semister.objects.create(subject = request.POST['subject1name'],
+    Semester.objects.create(subject = request.POST['subject1name'],
                             unit = request.POST['subject1Unit'],
                             grade = request.POST['subject1Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject = request.POST['subject2name'],
+    Semester.objects.create(subject = request.POST['subject2name'],
                             unit = request.POST['subject2Unit'],
                             grade = request.POST['subject2Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject = request.POST['subject3name'],
+    Semester.objects.create(subject = request.POST['subject3name'],
                             unit = request.POST['subject3Unit'],
                             grade = request.POST['subject3Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject =request.POST['subject4name'],
+    Semester.objects.create(subject =request.POST['subject4name'],
                             unit=request.POST['subject4Unit'],
                             grade=request.POST['subject4Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject =request.POST['subject5name'],
+    Semester.objects.create(subject =request.POST['subject5name'],
                             unit=request.POST['subject5Unit'],
                             grade=request.POST['subject5Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject=request.POST['subject6name'],
+    Semester.objects.create(subject=request.POST['subject6name'],
                             unit=request.POST['subject6Unit'],
                             grade=request.POST['subject6Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject =request.POST['subject7name'],
+    Semester.objects.create(subject =request.POST['subject7name'],
                             unit=request.POST['subject7Unit'],
                             grade=request.POST['subject7Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject=request.POST['subject8name'],
+    Semester.objects.create(subject=request.POST['subject8name'],
                             unit=request.POST['subject8Unit'],
                             grade=request.POST['subject8Grade'],
                             term = request.POST['subjectTerm'])
 
-    Semister.objects.create(subject=request.POST['subject9name'],
+    Semester.objects.create(subject=request.POST['subject9name'],
                             unit=request.POST['subject9Unit'],
                             grade=request.POST['subject9Grade'],
                             term = request.POST['subjectTerm'])
@@ -460,13 +474,13 @@ def search_subjects_in_the_flow(request):
         # ถ้า text input เป็นวิชานี้ ให้ result เป็นวิชานี้
         # 1 ProFund
         if subjects == "Programming Fundamental" :
-            result = """Semister2 : Algorithms and Data Structures <br />
-            Semister5 : Operating Systems"""
+            result = """Semester2 : Algorithms and Data Structures <br />
+            Semester5 : Operating Systems"""
 
         # 2 MathI
         elif subjects == "Engineering Mathematics I" :
-            result = """Semister2 : Math II <br />
-            Semister3 : Statistics for Computer Engineer"""
+            result = """Semester2 : Math II <br />
+            Semester3 : Statistics for Computer Engineer"""
 
         # 3 ComExplo
         elif subjects == "Computer Engineering Exploration" :
@@ -474,7 +488,7 @@ def search_subjects_in_the_flow(request):
 
         # 4 PhysicsI
         elif subjects == "Physics I" :
-            result = "Semister2 : Physics II"
+            result = "Semester2 : Physics II"
 
         # 5 PhyLabI
         elif subjects == "Physics Laboratory I" :
@@ -498,7 +512,7 @@ def search_subjects_in_the_flow(request):
 
         # 10 Circuit
         elif subjects == "Electric Circuit Theory" :
-            result = "Semister4 : Analog and Digital Electronics"
+            result = "Semester4 : Analog and Digital Electronics"
 
         # 11 CircuitLab
         elif subjects == "Electric Circuit Lab" :
@@ -506,9 +520,9 @@ def search_subjects_in_the_flow(request):
 
         # 12 Algo
         elif subjects == "Algorithms and Data Structure" :
-            result = """Semister3 : Software Development Practice I <br />
-            Semister5 : Computer Organization <br />
-            Semister6 : Database Systems"""
+            result = """Semester3 : Software Development Practice I <br />
+            Semester5 : Computer Organization <br />
+            Semester6 : Database Systems"""
 
         # 13 Work Ethics
         elif subjects == "Work Ethics" :
@@ -516,8 +530,8 @@ def search_subjects_in_the_flow(request):
 
         # 14 MathII
         elif subjects == "Engineering Mathematics II" :
-            result = """Semister3 : Discrete Mathematics <br />
-            Semister3 : Introduction to Signals and System"""
+            result = """Semester3 : Discrete Mathematics <br />
+            Semester3 : Introduction to Signals and System"""
 
         # 15 PhysicsII
         elif subjects == "Physics II" :
@@ -545,8 +559,8 @@ def search_subjects_in_the_flow(request):
 
         # 21 Digital
         elif subjects == "Logic Design of Digital System" :
-            result = """Semister3 : Digital System Design Laboratory <br />
-            Semister4 : Computer Organization"""
+            result = """Semester3 : Digital System Design Laboratory <br />
+            Semester4 : Computer Organization"""
 
         # 22 DigiLab
         elif subjects == "Digital System Design Laboratory" :
@@ -554,11 +568,11 @@ def search_subjects_in_the_flow(request):
 
         # 23 SoftwareI
         elif subjects == "Software Development Practice I" :
-            result = "Semister4 : Software Development Practice II"
+            result = "Semester4 : Software Development Practice II"
 
         # 24 Discrete Math
         elif subjects == "Discrete Mathematics" :
-            result = "Semister6 : Database Systems"
+            result = "Semester6 : Database Systems"
 
         # 25 PhyLife
         elif subjects == "Science and Maths Elective I" :
@@ -566,15 +580,15 @@ def search_subjects_in_the_flow(request):
 
         # 26 SoftwareII
         elif subjects == "Software Development Practice II" :
-            result = "Semister5 : Software Engineering"
+            result = "Semester5 : Software Engineering"
 
         # 27 NetworkI
         elif subjects == "Computer Networks I" :
-            result = "Semister5 : Computer Networks II"
+            result = "Semester5 : Computer Networks II"
 
         # 28 ComOr
         elif subjects == "Computer Organization" :
-            result = "Semister5 : Embedded System Design"
+            result = "Semester5 : Embedded System Design"
 
         # 29 Ubi
         elif subjects == "Ubiquitous Computing" :
@@ -582,7 +596,7 @@ def search_subjects_in_the_flow(request):
 
         # 30 Analog
         elif subjects == "Analog and Digital Electronics" :
-            result = "Semister5 : Analog and Digital Electronics Lab"
+            result = "Semester5 : Analog and Digital Electronics Lab"
 
         # 31 GenMath
         elif subjects == "Science and Maths Elective II" :
@@ -594,7 +608,7 @@ def search_subjects_in_the_flow(request):
 
         # 33 NetworkII
         elif subjects == "Computer Networks II" :
-            result = "Semister6 : Computer Networks Lab"
+            result = "Semester6 : Computer Networks Lab"
 
         # 34 OS
         elif subjects == "Operating Systems" :
@@ -602,7 +616,7 @@ def search_subjects_in_the_flow(request):
 
         # 35 Embedded
         elif subjects == "Embedded System Design" :
-            result = "Semister6 : Embedded System Design Laboratory"
+            result = "Semester6 : Embedded System Design Laboratory"
 
         # 36 AnalogLab
         elif subjects == "Analog and Digital Electronics Lab" :
@@ -642,7 +656,7 @@ def search_subjects_in_the_flow(request):
 
         # 45 ProjectI
         elif subjects == "Project I" :
-            result = "Semister8 : Project II"
+            result = "Semester8 : Project II"
 
         # 46 Free Elective Course I
         elif subjects == "Free Elective Course I" :
@@ -688,7 +702,7 @@ def search_subjects_in_the_flow(request):
 # รวมทุกวิชาใน flow โดยเรียงตามเทอมในรูป flow
 def list_of_subjects(request) :
     # term 1
-    first_semister = """ Programming Fundamental<br />
+    first_semester = """ Programming Fundamental<br />
             Engineering Mathematics I<br />
             Computer Engineering Exploration<br />
             Physics I<br />
@@ -699,7 +713,7 @@ def list_of_subjects(request) :
             Introduction to Engineer<br />"""
 
     # term 2
-    second_semister = """Electric Circuit Theory<br />
+    second_semester = """Electric Circuit Theory<br />
             Electric Circuit Lab<br />
             Algorithms and Data Structure<br />
             Work Ethics<br />
@@ -710,7 +724,7 @@ def list_of_subjects(request) :
             Physical Education Elective Course II<br />"""
 
     # term 3
-    third_semister = """Statistics for Computer Engineer<br />
+    third_semester = """Statistics for Computer Engineer<br />
             Introduction to Signals and System<br />
             Logic Design of Digital System<br />
             Digital System Design Laboratory<br />
@@ -719,7 +733,7 @@ def list_of_subjects(request) :
             Science and Maths Elective I<br />"""
 
     # term 4
-    fourth_semister = """Software Development Practice II<br />
+    fourth_semester = """Software Development Practice II<br />
             Computer Networks I<br />
             Computer Organization<br />
             Ubiquitous Computing<br />
@@ -727,7 +741,7 @@ def list_of_subjects(request) :
             Science and Maths Elective II<br />"""
 
     # term 5
-    fifth_semister = """Software Engineering<br />
+    fifth_semester = """Software Engineering<br />
             Computer Networks II<br />
             Operating Systems<br />
             Embedded System Design<br />
@@ -735,7 +749,7 @@ def list_of_subjects(request) :
             Language Elective Course III<br />"""
 
     # term 6
-    sixth_semister = """Database Systems<br />
+    sixth_semester = """Database Systems<br />
             Computer Networks Lab<br />
             Embedded System Design Laboratory<br />
             Language Elective Course IV<br />
@@ -744,41 +758,41 @@ def list_of_subjects(request) :
             Humanities Elective Course I<br />"""
 
     # term 7
-    seventh_semister = """Project I<br />
+    seventh_semester = """Project I<br />
             Free Elective Course I<br />
             Humanities Elective Course II<br />
             Computer Eng. Elective Course III<br />
             Computer Eng. Elective Course IV<br />"""
 
     # term 8
-    eighth_semister = """Project II<br />
+    eighth_semester = """Project II<br />
             Computer Eng. Seminar<br />
             Free Elective Course II<br />
             Science and Maths Elective III"""
 
     # render หน้า subject.html ออกมา เรียงตามเทอมนั้น ๆ 
-    return render(request, 'subject.html', {'semister1':first_semister,
-                                            'semister2':second_semister,
-                                            'semister3':third_semister,
-                                            'semister4':fourth_semister,
-                                            'semister5':fifth_semister,
-                                            'semister6':sixth_semister,
-                                            'semister7':seventh_semister,
-                                            'semister8':eighth_semister} )
+    return render(request, 'subject.html', {'semister1':first_semester,
+                                            'semister2':second_semester,
+                                            'semister3':third_semester,
+                                            'semister4':fourth_semester,
+                                            'semister5':fifth_semester,
+                                            'semister6':sixth_semester,
+                                            'semister7':seventh_semester,
+                                            'semister8':eighth_semester} )
 
 # แสดงกราฟ
 def graph(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
     # เก็บ ชื่อวิชา หน่วยกิต และเกรด ของแต่ละเทอมไว้ใน dataterm ตามลำดับ
-    first_dataterm = Semister.objects.filter(term="1").all()
-    second_dataterm = Semister.objects.filter(term="2").all()
-    third_dataterm = Semister.objects.filter(term="3").all()
-    fourth_dataterm = Semister.objects.filter(term="4").all()
-    fifth_dataterm = Semister.objects.filter(term="5").all()
-    sixth_dataterm = Semister.objects.filter(term="6").all()
-    seventh_dataterm = Semister.objects.filter(term="7").all()
-    eighth_dataterm = Semister.objects.filter(term="8").all()
+    first_dataterm = Semester.objects.filter(term="1").all()
+    second_dataterm = Semester.objects.filter(term="2").all()
+    third_dataterm = Semester.objects.filter(term="3").all()
+    fourth_dataterm = Semester.objects.filter(term="4").all()
+    fifth_dataterm = Semester.objects.filter(term="5").all()
+    sixth_dataterm = Semester.objects.filter(term="6").all()
+    seventh_dataterm = Semester.objects.filter(term="7").all()
+    eighth_dataterm = Semester.objects.filter(term="8").all()
 
     # render Graph.html ให้แสดงข้อมูลตามเทอม โดยมีเส้นกราฟ GPA ระบุไว้ พร้อมแสดง GPAX
     return render(request, 'Graph.html', {'dataterm1': first_dataterm,
@@ -794,11 +808,11 @@ def graph(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในแต่ละเทอม พร้อม GPAX 
 def first_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    first_dataterm = Semister.objects.filter(term="1").all()
+    first_dataterm = Semester.objects.filter(term="1").all()
 
     # render firstTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -808,11 +822,11 @@ def first_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 2 และ GPAX 
 def second_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    second_dataterm = Semister.objects.filter(term="2").all()
+    second_dataterm = Semester.objects.filter(term="2").all()
     
     # render secondTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -822,11 +836,11 @@ def second_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 3 และ GPAX 
 def third_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    third_dataterm = Semister.objects.filter(term="3").all()
+    third_dataterm = Semester.objects.filter(term="3").all()
 
     # render thirdTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -836,11 +850,11 @@ def third_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 4 และ GPAX 
 def fourth_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    fourth_dataterm = Semister.objects.filter(term="4").all()
+    fourth_dataterm = Semester.objects.filter(term="4").all()
 
     # render fourthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -850,11 +864,11 @@ def fourth_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 5 และ GPAX 
 def fifth_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    fifth_dataterm = Semister.objects.filter(term="5").all()
+    fifth_dataterm = Semester.objects.filter(term="5").all()
 
     # render fifthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -864,11 +878,11 @@ def fifth_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 6 และ GPAX 
 def sixth_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    sixth_dataterm = Semister.objects.filter(term="6").all()
+    sixth_dataterm = Semester.objects.filter(term="6").all()
     
     # render sixthTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -878,11 +892,11 @@ def sixth_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 7 และ GPAX 
 def seventh_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    seventh_dataterm = Semister.objects.filter(term="7").all()
+    seventh_dataterm = Semester.objects.filter(term="7").all()
 
     # render seventhTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
@@ -892,11 +906,11 @@ def seventh_term(request):
 
 # แสดง วิชา หน่วยกิต เกรด ของแต่ละวิชา พร้อม GPA ในเทอม 8 และ GPAX 
 def eighth_term(request):
-    DATA_GPA = GPA.objects.all()
+    DATA_GPA = GradeGPA.objects.all()
     NEW_GPAX = GradeGPAX.objects.all()
 
     # เก็บ วิชา หน่วยกิต และเกรด ไว้ใน dataterm
-    eighth_dataterm = Semister.objects.filter(term="8").all()
+    eighth_dataterm = Semester.objects.filter(term="8").all()
 
     # render eightTerm.html แสดงข้อมูลวิชา หน่วยกิต และเกรด ของแต่ละวิชา
     # ที่ได้ทำการคำนวณไว้ พร้อมแสดง GPA ในเทอมนี้ และแสดง GPAX
